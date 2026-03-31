@@ -1,4 +1,4 @@
-# **Welcome visitor**
+# Welcome visitor
 
 This repo contains my all projects of my Internship at CODTECH IT SOLUTIONS.
 

@@ -36,12 +36,6 @@ function Navbar() {
                     </li>
 
                     <li>
-                        <NavLink to="/article" className={({ isActive }) =>
-                            isActive ? "text-blue-400 font-semibold" : "hover:text-blue-400"
-                        }>Article</NavLink>
-                    </li>
-
-                    <li>
                         <NavLink to="/about" className={({ isActive }) =>
                             isActive ? "text-blue-400 font-semibold" : "hover:text-blue-400"
                         }>About</NavLink>

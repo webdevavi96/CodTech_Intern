@@ -5,6 +5,7 @@ function SearchBar({ onSearch }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        alert("This feature is not available yet!")
         if (!query.trim()) return;
         onSearch(query);
     };
@@ -24,7 +25,7 @@ function SearchBar({ onSearch }) {
 
             <button
                 type="submit"
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-full"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-full cursor-pointer"
             >
                 Search
             </button>

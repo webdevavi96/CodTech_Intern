@@ -3,11 +3,10 @@ import { NavLink } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-gray-300 border-t border-white/10">
+    <footer className="bg-linear-to-br from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-gray-300 border-t border-white/10">
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
 
-        {/* Branding */}
         <div>
           <h2 className="text-lg md:text-xl font-bold text-white mb-3">
             News Project
@@ -17,18 +16,12 @@ function Footer() {
           </p>
         </div>
 
-        {/* Quick Links */}
         <div>
           <h3 className="text-white font-semibold mb-3">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li>
               <NavLink to="/" className="hover:text-blue-400 transition">
                 Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/article" className="hover:text-blue-400 transition">
-                Articles
               </NavLink>
             </li>
             <li>
@@ -44,7 +37,6 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Social Links */}
         <div>
           <h3 className="text-white font-semibold mb-3">Follow Us</h3>
 
@@ -65,7 +57,6 @@ function Footer() {
 
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-white/10 text-center py-4 text-xs md:text-sm text-gray-400">
         © {new Date().getFullYear()} News Project. All rights reserved.
       </div>

@@ -18,7 +18,6 @@ function Home() {
       currPage === 1 ? setLoading(true) : setLoadingMore(true);
 
       const res = await data(currPage);
-
       setNews((prevNews) => [
         ...prevNews,
         ...res.articles
@@ -48,6 +47,15 @@ function Home() {
     setCurrPage((prev) => prev + 1);
   };
 
+
+  if (loading) return (
+    <>
+      <div className='h-screen w-screen flex justify-center items-center'>
+        <TbLoader3 size={50} color='blue' />
+      </div>
+    </>
+  );
+
   return (
     <>
       <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col lg:flex-row gap-6">
@@ -62,8 +70,8 @@ function Home() {
           </div>
         ) : (
           <div className="w-full lg:w-[85%] space-y-6">
-            {news?.map((ne) => (
-              <Card key={ne.url} props={ne} />
+            {news?.map((ne, index) => (
+              <Card key={index} props={ne} />
             ))}
           </div>
         )}

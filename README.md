@@ -13,12 +13,11 @@ In these two days I improved the UI and API calls for latest news which done by 
 ### Project Snapshots
 
 These three images are represntation of my [news project](https://github.com/webdevavi96/CodTech_Intern/tree/main/NewsProject)
-
-![Home Page](/ProjectSnapshots/home.png)
 *Home Page*
+![Home Page](/ProjectSnapshots/home.png)
 
-![About Page](/ProjectSnapshots/about.png)
 *About Page*
+![About Page](/ProjectSnapshots/about.png)
 
-![Responsive Page](/ProjectSnapshots/responsive.png)
 *Responsive Page*
+![Responsive Page](/ProjectSnapshots/responsive.png)

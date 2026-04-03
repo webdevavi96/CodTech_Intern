@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This is the server of my chat web app",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,5 +14,12 @@
     "app"
   ],
   "author": "Avinash",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
+  }
 }

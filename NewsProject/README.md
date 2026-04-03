@@ -1,16 +1,17 @@
-# React + Vite
+# NewsProject
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the first task of my 12 weeks Internship at CodTech Technologies as a full stack web developer. This project show cases the knowledg of third party API intigretion in web applications.
 
-Currently, two official plugins are available:
+## Overview of project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This is a news web app, built using React and News API. In this web app, I have used free tier of news api which limites the requests to 100 requests per day. This project taught me these topics deeply -
 
-## React Compiler
+1. Error handeling
+2. react-hooks
+3. Better API response handeling
+4. Pagination, Dynamic date range as queary params
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Cons in this project
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Thsi Project is not a good choice for production due to less security of API key which can be seen through browser console.
+In future I'll improve security using professional ways.

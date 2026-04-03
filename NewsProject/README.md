@@ -15,3 +15,5 @@ This is a news web app, built using React and News API. In this web app, I have 
 
 Thsi Project is not a good choice for production due to less security of API key which can be seen through browser console.
 In future I'll improve security using professional ways.
+
+* I have removed strict mode to avoide re-rendering hook calls twice.*

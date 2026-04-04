@@ -22,3 +22,9 @@ These three images are represntation of my [news project](https://github.com/web
 
 *Responsive Page*
 ![Responsive Page](/ProjectSnapshots/responsive.png)
+
+-----------
+
+## Day 4 & 5
+
+In these two days I worked on UI design, System Design and Database relation diagram. On day 4 I started client side developement and built Landing page, Navbar, Footer and placed them into React Outlet to render in browser using createbrowserroutes. All routes mapping is done. Now moving farwad to build other pages.

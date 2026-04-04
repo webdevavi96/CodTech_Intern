@@ -3,5 +3,4 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Card from "./Card";
 
-
-export {Layout, Navbar, Footer, Card};
+export { Layout, Navbar, Footer, Card };

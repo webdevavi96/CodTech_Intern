@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Layout } from "../components/components";
+import { Chat, Layout } from "../components/components";
 import {
   Landing,
   Login,
@@ -66,6 +66,15 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoutes>
             <ManageProfile />
+          </ProtectedRoutes>
+        ),
+      },
+
+      {
+        path: "/chat/:id",
+        element: (
+          <ProtectedRoutes>
+            <Chat />
           </ProtectedRoutes>
         ),
       },

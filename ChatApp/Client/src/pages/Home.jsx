@@ -1,33 +1,35 @@
-import React from "react";
-import { Card } from "../components/components.js";
+import React, { useState } from "react";
+import { Card, Chat } from "../components/components.js";
+import { users } from "../services/api.js";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate();
+
+  const handleClick = (user) => {
+    if (window.innerWidth < 1024) {
+      navigate(`/chat/${user.id}`);
+    } else setSelectedUser(user);
+  };
+
   return (
-    <div className="space-y-2">
+    <div className="grid h-[calc(90vh-72px)] grid-cols-1 lg:grid-cols-[350px_1fr]">
+      <div className="space-y-2 overflow-y-auto p-3">
+        {users.map((user) => {
+          return <Card key={user.id} user={user} onClick={handleClick} />;
+        })}
+      </div>
 
-      <Card
-        name="Jerry"
-        message="Hey there!"
-        time="Online"
-        avatar="https://i.pravatar.cc/101"
-        variant="default"
-      />
-
-      <Card
-        name="Lucy"
-        message="Are you free tonight?"
-        time="Now"
-        avatar="https://i.pravatar.cc/102"
-        variant="active"
-      />
-
-      <Card
-        name="Joe Pr."
-        message="Hola!"
-        time="Yesterday"
-        avatar="https://i.pravatar.cc/103"
-        variant="muted"
-      />
+      <div className="hidden h-full lg:flex">
+        <Chat user={selectedUser}>
+          {!selectedUser && (
+            <div className="flex h-full items-center justify-center">
+              <p>Select people to start new chat</p>
+            </div>
+          )}
+        </Chat>
+      </div>
     </div>
   );
 }

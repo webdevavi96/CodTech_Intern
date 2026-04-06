@@ -28,3 +28,7 @@ These three images are represntation of my [news project](https://github.com/web
 ## Day 4 & 5
 
 In these two days I worked on UI design, System Design and Database relation diagram. On day 4 I started client side developement and built Landing page, Navbar, Footer and placed them into React Outlet to render in browser using createbrowserroutes. All routes mapping is done. Now moving farwad to build other pages.
+
+## Day 5 & 6
+
+In these two days, I finished Chat page layout and Calls page layout with some basic functionalities. The UI of this project is inspired by Whatsapp UI. Managed status using useState.

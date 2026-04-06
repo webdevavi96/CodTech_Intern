@@ -14,6 +14,7 @@ import {
   ManageProfile,
 } from "../pages/pages.js";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
+import CallPage from "../components/CallPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,15 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoutes>
             <Chat />
+          </ProtectedRoutes>
+        ),
+      },
+
+      {
+        path: "/call/:id",
+        element: (
+          <ProtectedRoutes>
+            <CallPage />
           </ProtectedRoutes>
         ),
       },

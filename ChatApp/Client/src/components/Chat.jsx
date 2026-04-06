@@ -1,65 +1,93 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { CiMenuKebab } from "react-icons/ci";
 import { MdAddIcCall } from "react-icons/md";
+import { FaArrowLeft } from "react-icons/fa";
 import { users } from "../services/api";
+import { getLastActive } from "../utils/getLastActive";
+import ChatBubble from "./ChatBubble";
+import SendMessageBox from "./SendMessageBox";
 
 export default function Chat({ user, children }) {
-    const { id } = useParams();
-    const [status, setStatus] = useState(null);
+  const { id } = useParams();
+  const [isMobileUser, setIsMobileUser] = useState(false);
+  const navigate = useNavigate();
 
-    const statusColor = {
-        "Online": "",
-        "Yesterday": "",
-    }
+  useEffect(() => {
+    if (window.innerWidth < 1024) setIsMobileUser(true);
+    else setIsMobileUser(false);
+  });
 
-    const activeUser = user || users.find((u) => u.id.toString() === id);
+  const activeUser = user || users.find((u) => u.id.toString() === id);
 
-    if (!activeUser) {
-        return (
-            <div className="flex h-full w-full flex-col bg-[#F2F0EF]">
-                {children}
-            </div>
-        );
-    }
+  const handleClick = () => {
+    navigate(window.history.back());
+  };
 
+  if (!activeUser) {
     return (
-        <div className="h-full w-full bg-[#F2F0EF] p-4">
-            <div className="flex justify-between items-center">
+    <div className="flex h-full w-full flex-col bg-[#F2F0EF]">{children}
+    </div>
+    )};
 
-                <div className="flex items-center gap-3">
-                    <div className="relative">
-                        <img
-                            src={activeUser.avatar}
-                            alt="User Avatar"
-                            className="w-10 h-10 rounded-full object-cover"
-                        />
-                        {activeUser.status == "Online" && (<span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>)}
-                    </div>
-
-                    <div className="flex flex-col leading-tight">
-                        <span className="font-semibold text-sm">
-                            {activeUser.name}
-                        </span>
-                        {activeUser == "Online" ? (<span className="text-xs text-green-700">
-                            {activeUser?.status}
-                        </span>) : (<span className="text-xs text-gray-700">
-                            {activeUser?.status}
-                        </span>)}
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-4 text-gray-600">
-                    <button className="cursor-pointer">
-                        <MdAddIcCall size={20} />
-                    </button>
-
-                    <button className="cursor-pointer">
-                        <CiMenuKebab size={20} />
-                    </button>
-                </div>
-
-            </div>
+  return (
+    <div className="flex h-full w-full flex-col rounded-3xl bg-[#F2F0EF]">
+      {isMobileUser && (
+        <div className="sticky top-0 p-2">
+          <button onClick={handleClick} className="cursor-pointer rounded-full px-4 py-2">
+            <FaArrowLeft />
+          </button>
         </div>
-    );
+      )}
+      <div className="flex items-center justify-between border-b p-4">
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <img
+              src={activeUser.avatar}
+              alt="User Avatar"
+              className="h-10 w-10 rounded-full object-cover"
+            />
+            {activeUser.status === "Online" && (
+              <span className="absolute right-0 bottom-0 h-3 w-3 rounded-full border-2 border-white bg-green-500"></span>
+            )}
+          </div>
+
+          <div className="flex flex-col leading-tight">
+            <span className="text-sm font-semibold">{activeUser.name}</span>
+            <span
+              className={`text-xs ${
+                activeUser.status === "Online" ? "text-green-700" : "text-gray-700"
+              }`}
+            >
+              {activeUser.status}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 text-gray-600">
+          <MdAddIcCall size={20} className="cursor-pointer" />
+          <CiMenuKebab size={20} className="cursor-pointer" />
+        </div>
+      </div>
+
+      <div className="py-2 text-center">
+        <h3 className="text-sm text-gray-500 italic">{getLastActive(activeUser.last_message)}</h3>
+      </div>
+
+      {/* MESSAGES */}
+      <div className="flex-1 space-y-4 overflow-y-auto px-4 pb-20">
+        <div className="flex justify-start">
+          <ChatBubble props={activeUser} messageStatus="recieved" />
+        </div>
+
+        <div className="flex justify-end">
+          <ChatBubble props={activeUser} messageStatus="sent" />
+        </div>
+      </div>
+
+      <div className="border-t bg-white p-2">
+        <SendMessageBox />
+      </div>
+    </div>
+  );
 }

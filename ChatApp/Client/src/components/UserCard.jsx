@@ -1,6 +1,6 @@
 import React from "react";
 
-function Card({user, onClick}) {
+function UserCard({ user, onClick }) {
   const variants = {
     default: "bg-[#8FA9C4] text-gray-900",
     active: "bg-[#0F5C4D] text-white",
@@ -12,7 +12,6 @@ function Card({user, onClick}) {
     active: "text-[#00FFB3]",
     muted: "text-gray-600",
   };
-
 
   return (
     <div
@@ -40,4 +39,4 @@ function Card({user, onClick}) {
   );
 }
 
-export default Card;
+export default UserCard;

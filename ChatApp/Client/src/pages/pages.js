@@ -1,14 +1,16 @@
-import Landing from "./Landing";
-import Login from "./Login";
-import Register from "./Register";
-import OTPVerify from "./OTPVerify";
-import Home from "./Home";
-import Contact from "./Contact";
-import About from "./About";
-import Calls from "./Calls";
-import Settings from "./Settings";
-import UpdateProfile from "./UpdateProfile";
-import ManageProfile from "./ManageProfile";
+import { lazy } from 'react';
+
+const Landing = lazy(() => import('./Landing'));
+const Login = lazy(() => import('./Login'));
+const Register = lazy(() => import('./Register'));
+const OTPVerify = lazy(() => import('./OTPVerify'));
+const Home = lazy(() => import('./Home'));
+const Contact = lazy(() => import('./Contact'));
+const About = lazy(() => import('./About'));
+const Calls = lazy(() => import('./Calls'));
+const Settings = lazy(() => import('./Settings'));
+const UpdateProfile = lazy(() => import('./UpdateProfile'));
+const ErrorPage = lazy(() => import('./404'));
 
 export {
   Landing,
@@ -21,5 +23,5 @@ export {
   Calls,
   Settings,
   UpdateProfile,
-  ManageProfile,
+  ErrorPage,
 };

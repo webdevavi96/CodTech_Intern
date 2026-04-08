@@ -1,5 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
-import { Chat, Layout } from "../components/components";
+import { createBrowserRouter } from 'react-router-dom';
+import { Chat, Layout } from '../components/components';
 import {
   Landing,
   Login,
@@ -11,27 +11,27 @@ import {
   Calls,
   Settings,
   UpdateProfile,
-  ManageProfile,
-} from "../pages/pages.js";
-import ProtectedRoutes from "./ProtectedRoutes.jsx";
-import CallPage from "../components/CallPage.jsx";
+  ErrorPage,
+} from '../pages/pages.js';
+import ProtectedRoutes from './ProtectedRoutes.jsx';
+import CallPage from '../components/CallPage.jsx';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Layout />,
     children: [
       { index: true, element: <Landing /> },
 
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
-      { path: "/verify_otp", element: <OTPVerify /> },
+      { path: '/login', element: <Login /> },
+      { path: '/register', element: <Register /> },
+      { path: '/verify_otp', element: <OTPVerify /> },
 
-      { path: "/contact", element: <Contact /> },
-      { path: "/about", element: <About /> },
+      { path: '/contact', element: <Contact /> },
+      { path: '/about', element: <About /> },
 
       {
-        path: "/home",
+        path: '/home',
         element: (
           <ProtectedRoutes>
             <Home />
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/calls",
+        path: '/calls',
         element: (
           <ProtectedRoutes>
             <Calls />
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/settings",
+        path: '/settings',
         element: (
           <ProtectedRoutes>
             <Settings />
@@ -55,24 +55,16 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/update_profile",
+        path: '/update_profile',
         element: (
           <ProtectedRoutes>
             <UpdateProfile />
           </ProtectedRoutes>
         ),
       },
-      {
-        path: "/manage_profile",
-        element: (
-          <ProtectedRoutes>
-            <ManageProfile />
-          </ProtectedRoutes>
-        ),
-      },
 
       {
-        path: "/chat/:id",
+        path: '/chat/:id',
         element: (
           <ProtectedRoutes>
             <Chat />
@@ -81,12 +73,17 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/call/:id",
+        path: '/call/:id',
         element: (
           <ProtectedRoutes>
             <CallPage />
           </ProtectedRoutes>
         ),
+      },
+
+      {
+        path: '/*',
+        element: <ErrorPage />,
       },
     ],
   },

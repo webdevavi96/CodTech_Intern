@@ -1,12 +1,11 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext } from 'react';
 
 export const AuthContext = createContext();
 
 const tempUser = {
-  "username": "test", 
-  "email": "test"
-}
-
+  username: 'test',
+  email: 'test',
+};
 
 export const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,8 +17,8 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     if (DEV_MODE) {
       const mockUser = {
-        username: "test",
-        email: "test@gmail.com",
+        username: 'test',
+        email: 'test@gmail.com',
       };
 
       setUser(mockUser);
@@ -28,15 +27,15 @@ export const AuthContextProvider = ({ children }) => {
       return;
     }
 
-    const accessToken = localStorage.getItem("accessToken");
-    const storedUser = localStorage.getItem("user");
+    const accessToken = localStorage.getItem('accessToken');
+    const storedUser = localStorage.getItem('user');
 
     if (accessToken && storedUser) {
       try {
         setUser(JSON.parse(storedUser));
         setIsAuthenticated(true);
       } catch {
-        localStorage.removeItem("user");
+        localStorage.removeItem('user');
       }
     }
 
@@ -44,8 +43,8 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   const login = (userData, accessToken) => {
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('user', JSON.stringify(userData));
 
     //   set Headers headers
 
@@ -54,8 +53,8 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const logOut = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
 
     //   delete Headers headers
 

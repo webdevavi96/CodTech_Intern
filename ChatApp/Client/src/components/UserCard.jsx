@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 
 function UserCard({ user, onClick }) {
   const variants = {
-    default: "bg-[#8FA9C4] text-gray-900",
-    active: "bg-[#0F5C4D] text-white",
-    muted: "bg-[#E5E5E5] text-gray-900",
+    default: 'bg-[#8FA9C4] text-gray-900',
+    active: 'bg-[#0F5C4D] text-white',
+    muted: 'bg-[#E5E5E5] text-gray-900',
   };
 
   const statusColors = {
-    default: "text-green-800",
-    active: "text-[#00FFB3]",
-    muted: "text-gray-600",
+    default: 'text-green-800',
+    active: 'text-[#00FFB3]',
+    muted: 'text-gray-600',
   };
 
   return (

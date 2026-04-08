@@ -1,12 +1,18 @@
-import React from 'react'
+import React from 'react';
 
 function SendMessageBox() {
   return (
-      <div className=" w-full flex justify-between space-x-2 px-2 py-1 border rounded-full">
-          <input type="text" className="w-full rounded-full bg-white px-2 active:border-0 outline-0" placeholder="Enter message" />
-          <button type="submit" className="p-2 bg-blue-600 rounded-full text-white cursor-pointer">Send</button>
-      </div>
-  )
+    <div className="flex w-full justify-between space-x-2 rounded-full border px-2 py-1">
+      <input
+        type="text"
+        className="w-full rounded-full px-2 outline-0 active:border-0"
+        placeholder="Enter message"
+      />
+      <button type="submit" className="cursor-pointer rounded-full bg-blue-600 p-2 text-white">
+        Send
+      </button>
+    </div>
+  );
 }
 
-export default SendMessageBox
+export default SendMessageBox;

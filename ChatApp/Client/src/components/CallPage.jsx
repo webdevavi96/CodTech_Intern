@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { MdOutlineChatBubble, MdCallEnd } from "react-icons/md";
-import { BsFillMicMuteFill } from "react-icons/bs";
-import { IoMdPersonAdd } from "react-icons/io";
-import { CiMenuKebab } from "react-icons/ci";
-import { FaArrowLeft } from "react-icons/fa";
-import { users } from "../services/api";
-import { endCall, muteCall, addNewPeople, chat } from "../services/callActions";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { MdOutlineChatBubble, MdCallEnd } from 'react-icons/md';
+import { BsFillMicMuteFill } from 'react-icons/bs';
+import { IoMdPersonAdd } from 'react-icons/io';
+import { CiMenuKebab } from 'react-icons/ci';
+import { FaArrowLeft } from 'react-icons/fa';
+import { users } from '../services/api';
+import { endCall, muteCall, addNewPeople, chat } from '../services/callActions';
 
 function CallPage({ user, children }) {
   const { id } = useParams();
@@ -29,7 +29,7 @@ function CallPage({ user, children }) {
   }
 
   return (
-    <div className="flex h-full w-full flex-col justify-between rounded-2xl p-6">
+    <div className="flex h-full w-full flex-col justify-between rounded-2xl bg-[#F2F0EF] p-6">
       {isMobileUser && (
         <div className="sticky top-0 p-2">
           <button onClick={handleClick} className="cursor-pointer rounded-full px-4 py-2">

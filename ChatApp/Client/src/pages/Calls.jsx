@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import CallerCard from "../components/CallerCard";
-import CallPage from "../components/CallPage";
-import { users } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import CallerCard from '../components/CallerCard';
+import CallPage from '../components/CallPage';
+import { users } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 function Calls() {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -15,9 +15,9 @@ function Calls() {
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleClick = (user) => {
@@ -40,8 +40,8 @@ function Calls() {
         <div className="grid grid-rows-[auto_1fr_auto]">
           <div />
 
-          <div className="flex items-center justify-center bg-[#F2F0EF]">
-            <div className="h-full w-full max-w-md rounded-2xl p-4 shadow-md">
+          <div className="flex items-center justify-center">
+            <div className="h-full w-full max-w-md rounded-2xl p-4">
               {selectedUser ? (
                 <CallPage user={selectedUser} />
               ) : (

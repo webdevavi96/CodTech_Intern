@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { UserCard, Chat } from "../components/components.js";
-import { users } from "../services/api.js";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { UserCard, Chat } from '../components/components.js';
+import { users } from '../services/api.js';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -14,17 +14,16 @@ function Home() {
     } else setSelectedUser(user);
   };
 
- 
-   useEffect(() => {
-     const handleResize = () => {
-       setIsMobileUser(window.innerWidth < 1024);
-     };
- 
-     handleResize();
-     window.addEventListener("resize", handleResize);
- 
-     return () => window.removeEventListener("resize", handleResize);
-   }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileUser(window.innerWidth < 1024);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="grid h-[calc(90vh-72px)] grid-cols-1 lg:grid-cols-[350px_1fr]">

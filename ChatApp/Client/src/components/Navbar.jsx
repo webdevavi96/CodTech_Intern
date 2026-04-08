@@ -1,27 +1,23 @@
-import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
-import { AuthContext } from "../contexts/authContext";
+import React, { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import { AuthContext } from '../contexts/authContext';
 
 function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
 
   const linkClass = ({ isActive }) =>
-    `px-5 py-1.5 rounded-full font-medium transition ${isActive
-      ? "bg-[#009DFF] text-white"
-      : "text-white border border-[#009DFF] hover:bg-[#009DFF]"
+    `relative px-2 py-1 font-medium transition ${
+      isActive ? 'text-[#00A884]' : 'text-gray-400 hover:text-white'
     }`;
 
   return (
     <header className="w-full bg-black">
-      <div className="mx-auto max-w-7xl px-4 py-4 lg:px-16 flex flex-col md:flex-row space-y-2 md:space-y-0 items-center justify-between">
-
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between space-y-2 px-4 py-4 md:flex-row md:space-y-0 lg:px-16">
         <h1 className="text-xl font-bold tracking-wide">
-          <span className="text-[#FF0000]">LIVE</span>{" "}
-          <span className="text-white">TALK</span>
+          <span className="text-[#FF0000]">LIVE</span> <span className="text-white">TALK</span>
         </h1>
 
-        <div className="flex items-center gap-4 flex-wrap">
-
+        <div className="flex flex-wrap items-center gap-4">
           {!isAuthenticated ? (
             <>
               <NavLink to="/login" className={linkClass}>
@@ -34,17 +30,37 @@ function Navbar() {
           ) : (
             <>
               <NavLink to="/home" className={linkClass}>
-                Chats
+                {({ isActive }) => (
+                  <span className="relative">
+                    Chats
+                    {isActive && (
+                      <span className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-[#00A884]"></span>
+                    )}
+                  </span>
+                )}
               </NavLink>
               <NavLink to="/calls" className={linkClass}>
-                Calls
+                {({ isActive }) => (
+                  <span className="relative">
+                    Calls
+                    {isActive && (
+                      <span className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-[#00A884]"></span>
+                    )}
+                  </span>
+                )}
               </NavLink>
               <NavLink to="/settings" className={linkClass}>
-                Settings
+                {({ isActive }) => (
+                  <span className="relative">
+                    Settings
+                    {isActive && (
+                      <span className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-[#00A884]"></span>
+                    )}
+                  </span>
+                )}
               </NavLink>
             </>
           )}
-
         </div>
       </div>
     </header>

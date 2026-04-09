@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/User.models.js";
 import { sendOtp } from "../config/config.js";
+import { client } from "../config/redis.conf.js";
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -77,69 +78,59 @@ export const register = asyncHandler(async (req, res) => {
       success: false,
     });
 
-  const otpStatus = sendOtp(email);
+  const { isSent, otp } = sendOtp(email);
 
-  // save the user into redis db temporarly.
+  if (!isSent)
+    return res.status(501).json({
+      message: "Internal server error!",
+      success: false,
+    });
+
   const user = {
     username: username,
     fullName: fullName,
     email: email,
     password: password,
   };
-  const otpLife = 600000; // in ms
 
-  if (!otpStatus)
-    return res.status(501).json({
-      message: "Internal server error!",
-      success: false,
-    });
+  await client.set(username, { user, otp }, { EX: 300, NX: true });
 
   return res.status(200).json({
-    message: "Otp sent successfully!",
+    message: "OTP sent successfully!",
+    data: username,
     success: true,
   });
 });
 
-export const verufyOtpAndRegister = asyncHandler(async (req, res) => {
-  const { otp } = req.body;
+export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
+  const { username, otpInput } = req.body;
 
-  // get the user from redis db.
-  const user = null;
-  const savedOtp = null;
-  const otpLife = null;
-  let otpExp = 0; // in ms
-  const ms = 1000;
+  const cachedUser = await client.get(username);
 
-  const timer = setTimeout(() => {
-    if (otpExp === otpLife) {
-      clearInterval(timer);
-      return res.status(401).json({
-        message: "OTP expired!",
-        success: false,
-      });
-    }
-
-    otpExp += ms;
-  }, ms);
-
-  if (otp !== savedOtp)
-    return res.status(401).json({
-      message: "Incorrect Otp!",
+  if (!cachedUser)
+    return res.status(400).json({
+      message: "OTP Expired",
       success: false,
     });
+
+  const { otp, user } = JSON.parse(cachedUser);
+
+  if (otp != parseInt(otpInput))
+    return res.status(400).json({
+      message: "Invalid OTP",
+      success: false,
+    });
+
+  await client.del(username);
 
   const createdUser = await User.create(user);
   if (!createdUser)
     return res.status(501).json({
-      message: "Internal server error! Please try again after some time.",
+      message: "Internal server error! Please try again later.",
       success: false,
     });
-
   return res.status(201).json({
-    message: "Account created successfully!",
-    user: user,
+    message: "Account created succfully.",
     success: true,
   });
 });
-
-

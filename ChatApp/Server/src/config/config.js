@@ -1,6 +1,8 @@
 import { generateOtp } from "../utils/OTPgenerator.js";
+import { sendMail } from "./nodemailer.js";
 
-export const sendOtp = async (email) => {
+export const sendOtp = (email) => {
   const otp = generateOtp();
-  return true;
+  const isSent = sendMail(email, otp);
+  return isSent, otp;
 };

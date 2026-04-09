@@ -1,4 +1,4 @@
 export const generateOtp = () => {
-  const otp = Math.random().toFixed(3) * 100000;
+  const otp = Math.floor(100000 + Math.random() * 900000);
   return otp;
 };

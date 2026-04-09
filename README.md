@@ -36,3 +36,11 @@ In these two days I worked on UI design, System Design and Database relation dia
 ### Day 5 & 6
 
 In these two days, I finished Chat page layout and Calls page layout with some basic functionalities. The UI of this project is inspired by Whatsapp UI. Managed status using useState.
+
+### Day 7 & 8
+
+In these two days I have intigrated email otp verification using google smtp, redis for caching, connected mongodb, secured environment veriables and accessing using dotnev package.
+
+*Next steps:*
+
+Now I'll connect client side with backend and resolve the CORS ORIGIN ERRORS, establise connection for all user auth routes and add JWT Token for verification and user data security.

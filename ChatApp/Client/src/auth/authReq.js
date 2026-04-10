@@ -45,11 +45,11 @@ export const loginUser = async (formData) => {
     });
 
     const data = await res.json();
-
     if (!res.ok) throw new Error(res.message);
-
+console.log(data)
     return data;
   } catch (error) {
+    console.log("somethin", error)
     throw new Error(error);
   }
 };

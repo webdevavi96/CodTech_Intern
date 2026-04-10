@@ -7,30 +7,24 @@ import jwt from "jsonwebtoken";
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email, password)
-
   if (!email || !password)
     return res.status(401).json({
       message: "Wrong credentials!",
       status: 401,
     });
 
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email: email });
   if (!user)
     return res.status(404).json({
       message: "User not found!",
     });
-
-  const isPasswordCorrect = await user.isPasswordCorrect(password);
+  const isPasswordCorrect = user.isPasswordCorrect(password);
 
   if (!isPasswordCorrect)
-    return res.status(403).json(new ApiError(401, "Incorrect password"));
-
-  const sanitisedUser = user.toObject();
-  delete sanitisedUser.password;
+    return res.status(401).json({ message: "Incorrect password" });
 
   const token = jwt.sign(
-    { userId: sanitisedUser._id },
+    { userId: user._id },
     process.env.JWT_SECRET_KEY,
     { expiresIn: "1d" } // 1 Day expiry
   );
@@ -39,13 +33,16 @@ export const login = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "None",
-    expires: new Date(Date.now() * 24 * 60 * 60 * 1000),
   };
+
+  const sanitisedUser= await user.toObject();
+  delete sanitisedUser.password;
+  
 
   return res.status(200).cookie("authToken", token, cookieOptions).json({
     message: "login successfulle",
     success: true,
-    data: sanitisedUser,
+    data: user,
   });
 });
 
@@ -116,8 +113,8 @@ export const register = asyncHandler(async (req, res) => {
 
 export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
   const { otpInput, username } = req.body;
-  if (!username || !otpInput){
-    console.log(username, otpInput)
+  if (!username || !otpInput) {
+    console.log(username, otpInput);
     return res.status(401).json({ message: "Invalid input" });
   }
 

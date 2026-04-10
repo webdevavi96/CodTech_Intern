@@ -1,25 +1,28 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from "../contexts/authContext";
 import { loginUser } from '../auth/authReq';
 
 function Login() {
   const { register, handleSubmit } = useForm();
   const [show, setShow] = useState(false);
-  const { login } = useContext(AuthContext)
-
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/home";
   const onSubmit = async (data) => {
     if (!data) return;
 
     const res = await loginUser(data);
 
-    if (res.status !== 200) return;
+    if (!res.success) {
+      return;
+    };
 
-    console.log(res)
-    // login(res.data)
-
+    login(res?.data);
+    navigate(from, { replace: true });
   };
 
   return (

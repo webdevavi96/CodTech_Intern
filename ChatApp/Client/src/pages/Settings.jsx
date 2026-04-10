@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Profile } from '../components/components.js';
-import { users } from '../services/api.js';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import { AuthContext } from '../contexts/authContext.jsx';
 
 function Settings() {
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
-  const user1 = users[0];
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (window.innerWidth < 1024) setIsMobileUser(true);
@@ -59,7 +59,7 @@ function Settings() {
           </details>
         </div>
         <div className="order-1 flex min-h-96 flex-col justify-center rounded-2xl bg-[#111b21] p-6 shadow-sm md:order-2">
-          <Profile user={user1} />
+          <Profile user={user} />
         </div>
       </div>
     </div>

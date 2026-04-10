@@ -9,12 +9,20 @@ export const AuthContextProvider = ({ children }) => {
   const [username, setUsername] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      setUser(JSON.parse(user));
+      setIsAuthenticated(true);
+    };
+    setLoading(false);
+  }, []);
+
   const userContext = (username) => {
     setUsername(username);
   }
 
-  const login = (userData, accessToken) => {
-    localStorage.setItem('accessToken', accessToken);
+  const login = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
 
     //   set Headers headers
@@ -25,7 +33,6 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const logOut = () => {
-    localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
 
     //   delete Headers headers

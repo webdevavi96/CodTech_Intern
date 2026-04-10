@@ -1,13 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { registerUser } from '../auth/authReq';
+import { AuthContext } from '../contexts/authContext';
+
 
 function Register() {
+  const navigate = useNavigate();
+  const { userContext } = useContext(AuthContext);
+
   const { register, handleSubmit } = useForm();
   const [show, setShow] = useState(false);
+  const [password, setPassword] = useState(null);
+  const [confPassword, setConfPassword] = useState(null);
+  const [wrongPass, setWrongPass] = useState(false);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    if (!data) return;
+
+    Reflect.deleteProperty(data, "confirmPassword");
+
+    console.log(data)
+
+    const res = await registerUser(data);
+
+    console.log(res);
+
+    userContext(res.data);
+
+    if (!res.success) return;
+
+    navigate("/verify_otp");
+  }
+
+  const handlePassword = () => {
+    if (password !== confPassword) {
+      setWrongPass(true);
+      console.log("wrong pass");
+    };
+    setWrongPass(false);
+  };
+
+  useEffect(() => {
+    handlePassword();
+  }, [confPassword, password])
 
   return (
     <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-[#F3F4F5] px-4 py-10">
@@ -52,6 +89,7 @@ function Register() {
               <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
               <input
                 {...register('password')}
+                onChange={(e) => setPassword(e.value)}
                 type={show ? 'text' : 'password'}
                 className="w-full rounded-md border border-gray-300 px-4 py-2 pr-10 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
               />
@@ -70,16 +108,10 @@ function Register() {
               </label>
               <input
                 {...register('confirmPassword')}
+                onChange={(e) => setConfPassword(e.value)}
                 type={show ? 'text' : 'password'}
                 className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
               />
-              <button
-                type="button"
-                onClick={() => setShow((prev) => !prev)}
-                className="absolute top-9 right-3 text-gray-500"
-              >
-                {show ? <IoEyeOff /> : <IoEye />}
-              </button>
             </div>
           </div>
 

@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { NavLink } from 'react-router-dom';
+import { AuthContext } from "../contexts/authContext";
+import { loginUser } from '../auth/authReq';
 
 function Login() {
   const { register, handleSubmit } = useForm();
   const [show, setShow] = useState(false);
+  const { login } = useContext(AuthContext)
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    if (!data) return;
+
+    const res = await loginUser(data);
+
+    if (res.status !== 200) return;
+
+    console.log(res)
+    // login(res.data)
+
+  };
 
   return (
     <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-[#F3F4F5] px-6 py-10 md:px-16">

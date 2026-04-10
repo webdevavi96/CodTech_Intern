@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CiMenuKebab } from 'react-icons/ci';
 import { MdAddIcCall } from 'react-icons/md';
 import { FaArrowLeft } from 'react-icons/fa';
-import { users } from '../services/api';
 import { getLastActive } from '../utils/getLastActive';
 import ChatBubble from './ChatBubble';
 import SendMessageBox from './SendMessageBox';
@@ -12,13 +11,14 @@ export default function Chat({ user, children }) {
   const { id } = useParams();
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
+  const [users, setUsers] = useState(null);
 
   useEffect(() => {
     if (window.innerWidth < 1024) setIsMobileUser(true);
     else setIsMobileUser(false);
   });
 
-  const activeUser = user || users.find((u) => u.id.toString() === id);
+  const activeUser = user || users?.find((u) => u.id.toString() === id);
 
   const handleClick = () => {
     navigate(window.history.back());
@@ -53,9 +53,8 @@ export default function Chat({ user, children }) {
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold">{activeUser.name}</span>
             <span
-              className={`text-xs ${
-                activeUser.status === 'Online' ? 'text-green-700' : 'text-gray-700'
-              }`}
+              className={`text-xs ${activeUser.status === 'Online' ? 'text-green-700' : 'text-gray-700'
+                }`}
             >
               {activeUser.status}
             </span>

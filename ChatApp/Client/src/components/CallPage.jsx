@@ -5,7 +5,6 @@ import { BsFillMicMuteFill } from 'react-icons/bs';
 import { IoMdPersonAdd } from 'react-icons/io';
 import { CiMenuKebab } from 'react-icons/ci';
 import { FaArrowLeft } from 'react-icons/fa';
-import { users } from '../services/api';
 import { endCall, muteCall, addNewPeople, chat } from '../services/callActions';
 
 function CallPage({ user, children }) {

@@ -2,7 +2,7 @@ import { app } from "./app.js";
 import { client } from "./src/config/redis.conf.js";
 import { connect } from "./src/config/conn.db.js";
 
-const port = 3000;
+const port = process.env.APP_PORT;
 
 app.get("/", async (req, res) => {
   await client.set("mykey", "Santos pakhandi hai!");

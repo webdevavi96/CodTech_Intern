@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import CallerCard from '../components/CallerCard';
 import CallPage from '../components/CallPage';
-import { users } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 function Calls() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
+  const [users, setUsers] = useState(null);
+  
 
   useEffect(() => {
     const handleResize = () => {

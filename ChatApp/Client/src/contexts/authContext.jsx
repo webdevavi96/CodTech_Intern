@@ -2,45 +2,16 @@ import { useState, useEffect, createContext } from 'react';
 
 export const AuthContext = createContext();
 
-const tempUser = {
-  username: 'test',
-  email: 'test',
-};
 
 export const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [username, setUsername] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const DEV_MODE = true;
-
-  useEffect(() => {
-    if (DEV_MODE) {
-      const mockUser = {
-        username: 'test',
-        email: 'test@gmail.com',
-      };
-
-      setUser(mockUser);
-      setIsAuthenticated(true);
-      setLoading(false);
-      return;
-    }
-
-    const accessToken = localStorage.getItem('accessToken');
-    const storedUser = localStorage.getItem('user');
-
-    if (accessToken && storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-        setIsAuthenticated(true);
-      } catch {
-        localStorage.removeItem('user');
-      }
-    }
-
-    setLoading(false);
-  }, []);
+  const userContext = (username) => {
+    setUsername(username);
+  }
 
   const login = (userData, accessToken) => {
     localStorage.setItem('accessToken', accessToken);
@@ -50,6 +21,7 @@ export const AuthContextProvider = ({ children }) => {
 
     setUser(userData);
     setIsAuthenticated(true);
+    setLoading(false);
   };
 
   const logOut = () => {
@@ -67,9 +39,11 @@ export const AuthContextProvider = ({ children }) => {
       value={{
         isAuthenticated,
         user,
+        username,
         login,
         logOut,
         loading,
+        userContext,
       }}
     >
       {children}

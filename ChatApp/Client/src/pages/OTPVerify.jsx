@@ -5,7 +5,6 @@ import { AuthContext } from '../contexts/authContext';
 import { useNavigate } from 'react-router-dom';
 
 function OTPVerify() {
-
   const {
     register,
     handleSubmit,
@@ -18,11 +17,11 @@ function OTPVerify() {
 
   const onSubmit = async (data) => {
     if (!data) return;
-    if (!username) console.log("null value", username)
+    if (!username) console.log('null value', username);
     const res = await verifyOtp(data, username);
     if (res.status !== 201) return;
 
-    navigate("/login");
+    navigate('/login');
     reset();
   };
 
@@ -48,13 +47,16 @@ function OTPVerify() {
             className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
           />
 
-          {errors.otpInput && <p className="mt-1 text-sm text-red-500">{errors.otpInput.message}</p>}
+          {errors.otpInput && (
+            <p className="mt-1 text-sm text-red-500">{errors.otpInput.message}</p>
+          )}
         </div>
 
         <div className="mt-4 flex items-center justify-center">
           <button
             disabled={isSubmitting}
-            className="rounded-full bg-blue-600 px-5 py-1.5 font-medium text-white transition hover:bg-blue-700">
+            className="rounded-full bg-blue-600 px-5 py-1.5 font-medium text-white transition hover:bg-blue-700"
+          >
             Submit
           </button>
         </div>

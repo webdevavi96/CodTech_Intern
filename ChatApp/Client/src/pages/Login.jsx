@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from '../contexts/authContext';
 import { loginUser } from '../auth/authReq';
 
 function Login() {
@@ -11,7 +11,7 @@ function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/home";
+  const from = location.state?.from?.pathname || '/home';
   const onSubmit = async (data) => {
     if (!data) return;
 
@@ -19,7 +19,7 @@ function Login() {
 
     if (!res.success) {
       return;
-    };
+    }
 
     login(res?.data);
     navigate(from, { replace: true });

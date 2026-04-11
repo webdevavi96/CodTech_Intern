@@ -3,11 +3,12 @@ import { Profile } from '../components/components.js';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { AuthContext } from '../contexts/authContext.jsx';
+import { logout } from '../auth/authReq.js';
 
 function Settings() {
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
 
   useEffect(() => {
     if (window.innerWidth < 1024) setIsMobileUser(true);
@@ -16,6 +17,14 @@ function Settings() {
 
   const handleClick = () => {
     navigate(window.history.back());
+  };
+
+  const handleLogout = async () => {
+    const res = await logout(user);
+    if (res.success) {
+      logOut();
+      navigate('/login');
+    }
   };
 
   return (
@@ -54,7 +63,12 @@ function Settings() {
 
             <div className="mt-3 space-y-2 text-sm">
               <button className="rounded bg-white px-3 py-1 text-[#FF0000]">Delete Account</button>
-              <button className="ml-2 rounded bg-white px-3 py-1 text-[#FF0000]">Log Out</button>
+              <button
+                onClick={handleLogout}
+                className="ml-2 rounded bg-white px-3 py-1 text-[#FF0000]"
+              >
+                Log Out
+              </button>
             </div>
           </details>
         </div>

@@ -5,7 +5,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { registerUser } from '../auth/authReq';
 import { AuthContext } from '../contexts/authContext';
 
-
 function Register() {
   const navigate = useNavigate();
   const { userContext } = useContext(AuthContext);
@@ -19,9 +18,9 @@ function Register() {
   const onSubmit = async (data) => {
     if (!data) return;
 
-    Reflect.deleteProperty(data, "confirmPassword");
+    Reflect.deleteProperty(data, 'confirmPassword');
 
-    console.log(data)
+    console.log(data);
 
     const res = await registerUser(data);
 
@@ -31,20 +30,20 @@ function Register() {
 
     if (!res.success) return;
 
-    navigate("/verify_otp");
-  }
+    navigate('/verify_otp');
+  };
 
   const handlePassword = () => {
     if (password !== confPassword) {
       setWrongPass(true);
-      console.log("wrong pass");
-    };
+      console.log('wrong pass');
+    }
     setWrongPass(false);
   };
 
   useEffect(() => {
     handlePassword();
-  }, [confPassword, password])
+  }, [confPassword, password]);
 
   return (
     <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-[#F3F4F5] px-4 py-10">

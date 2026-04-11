@@ -1,16 +1,16 @@
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { User } from "../models/User.models.js";
-import { sendOtp } from "../config/config.js";
-import { client } from "../config/redis.conf.js";
-import jwt from "jsonwebtoken";
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { User } from '../models/User.models.js';
+import { sendOtp } from '../config/config.js';
+import { client } from '../config/redis.conf.js';
+import jwt from 'jsonwebtoken';
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === 'production';
 
 const cookieOptions = {
   httpOnly: true,
   secure: isProduction,
-  sameSite: isProduction ? "None" : "Lax",
-  path: "/",
+  sameSite: isProduction ? 'None' : 'Lax',
+  path: '/',
 };
 
 export const login = asyncHandler(async (req, res) => {
@@ -18,7 +18,7 @@ export const login = asyncHandler(async (req, res) => {
 
   if (!email || !password)
     return res.status(401).json({
-      message: "Wrong credentials!",
+      message: 'Wrong credentials!',
       status: 401,
     });
 
@@ -26,13 +26,12 @@ export const login = asyncHandler(async (req, res) => {
 
   if (!user)
     return res.status(404).json({
-      message: "User not found!",
+      message: 'User not found!',
     });
 
   const isPasswordCorrect = user.isPasswordCorrect(password);
 
-  if (!isPasswordCorrect)
-    return res.status(401).json({ message: "Incorrect password" });
+  if (!isPasswordCorrect) return res.status(401).json({ message: 'Incorrect password' });
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
@@ -50,28 +49,27 @@ export const login = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken, cookieOptions)
-    .cookie("refreshToken", refreshToken, cookieOptions)
+    .cookie('accessToken', accessToken, cookieOptions)
+    .cookie('refreshToken', refreshToken, cookieOptions)
     .json({
-      message: "login successfulle",
+      message: 'login successfulle',
       success: true,
       data: sanitisedUser,
     });
 });
 
 export const logOut = asyncHandler(async (req, res) => {
-  await User.findByIdAndUpdate(
-    req.user._id,
-    { $unset: { refreshToken: "" } },
-    { new: true }
-  );
+  const user = req.body;
+  await User.findByIdAndUpdate(user._id, { $unset: { refreshToken: '' } }, { new: true });
+
+  await client.del(user.username);
 
   return res
     .status(200)
-    .clearCookie("accessToken", cookieOptions)
-    .clearCookie("refreshToken", cookieOptions)
+    .clearCookie('accessToken', cookieOptions)
+    .clearCookie('refreshToken', cookieOptions)
     .json({
-      message: "Log out successfull!",
+      message: 'Log out successfull!',
       data: {},
       success: true,
     });
@@ -85,7 +83,7 @@ export const register = asyncHandler(async (req, res) => {
 
   if (!username || !name || !email || !password)
     return res.status(404).json({
-      message: "All; fields are reqired!",
+      message: 'All; fields are reqired!',
       data: {},
       success: false,
     });
@@ -94,7 +92,7 @@ export const register = asyncHandler(async (req, res) => {
 
   if (!isSent)
     return res.status(501).json({
-      message: "Internal server error!",
+      message: 'Internal server error!',
       success: false,
     });
 
@@ -111,7 +109,7 @@ export const register = asyncHandler(async (req, res) => {
   });
 
   return res.status(200).json({
-    message: "OTP sent successfully!",
+    message: 'OTP sent successfully!',
     data: username,
     success: true,
   });
@@ -122,14 +120,14 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
 
   if (!username || !otpInput) {
     console.log(username, otpInput);
-    return res.status(401).json({ message: "Invalid input" });
+    return res.status(401).json({ message: 'Invalid input' });
   }
 
   const cachedUser = await client.get(username);
 
   if (!cachedUser)
     return res.status(400).json({
-      message: "OTP Expired",
+      message: 'OTP Expired',
       success: false,
     });
 
@@ -138,7 +136,7 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
 
   if (otp != parseInt(otpInput))
     return res.status(400).json({
-      message: "Invalid OTP",
+      message: 'Invalid OTP',
       success: false,
     });
 
@@ -148,12 +146,12 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
 
   if (!createdUser)
     return res.status(501).json({
-      message: "Internal server error! Please try again later.",
+      message: 'Internal server error! Please try again later.',
       success: false,
     });
 
   return res.status(201).json({
-    message: "Account created succfully.",
+    message: 'Account created succfully.',
     success: true,
   });
 });
@@ -161,22 +159,18 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
 export const refreshAccessToken = asyncHandler(async (req, res) => {
   const token = req.cookie.refreshToken;
 
-  if (!token) return res.status(401).json({ message: "Un-Authorized" });
+  if (!token) return res.status(401).json({ message: 'Un-Authorized' });
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_REFRESH_KEY);
 
-    const newAccessToken = jwt.sign(
-      { _id: decodedToken._id },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "15m" }
-    );
+    const newAccessToken = jwt.sign({ _id: decodedToken._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: '15m',
+    });
 
-    return res
-      .cookie("accessToken", newAccessToken, cookieOptions)
-      .json({ success: true });
+    return res.cookie('accessToken', newAccessToken, cookieOptions).json({ success: true });
   } catch (error) {
-    return res.status(403).json({ message: "Invalid refresh token" });
+    return res.status(403).json({ message: 'Invalid refresh token' });
   }
 });
 
@@ -185,10 +179,7 @@ export const getMe = asyncHandler(async (req, res) => {
     let decodedToken;
 
     try {
-      decodedToken = jwt.verify(
-        req.cookies.accessToken,
-        process.env.JWT_SECRET_KEY
-      );
+      decodedToken = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET_KEY);
     } catch {
       // If access is token expired, we will use refresh token to generate a new access token
 
@@ -196,18 +187,15 @@ export const getMe = asyncHandler(async (req, res) => {
 
       if (!refreshToken) throw new Error();
 
-      const decodedRefreshToken = jwt.decode(
-        refreshToken,
-        process.env.JWT_REFRESH_KEY
-      );
+      const decodedRefreshToken = jwt.decode(refreshToken, process.env.JWT_REFRESH_KEY);
 
       const newAccessToken = jwt.sign(
         { _id: decodedRefreshToken._id },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: "15m" }
+        { expiresIn: '15m' }
       );
 
-      res.cookie("accessToken", newAccessToken, cookieOptions);
+      res.cookie('accessToken', newAccessToken, cookieOptions);
       decodedToken = decodedRefreshToken;
     }
 
@@ -216,17 +204,15 @@ export const getMe = asyncHandler(async (req, res) => {
     user = await client.get(decodedToken.username);
 
     if (!user) {
-      user = await User.findById(decodedToken._id).select("-password");
+      user = await User.findById(decodedToken._id).select('-password');
       await client.set(username, JSON.stringify({ user }), {
         EX: 1800,
         NX: true,
       });
     }
 
-    return res
-      .status(200)
-      .json({ message: "success", success: true, user: user });
+    return res.status(200).json({ message: 'success', success: true, user: user });
   } catch (error) {
-    return res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ message: 'Invalid token' });
   }
 });

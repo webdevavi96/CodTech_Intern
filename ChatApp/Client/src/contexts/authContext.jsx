@@ -13,8 +13,8 @@ export const AuthContextProvider = ({ children }) => {
     const getMe = async () => {
       try {
         const res = await fetch(`${url}/me`, {
-          method: "GET",
-          credentials: "include",
+          method: 'GET',
+          credentials: 'include',
         });
 
         if (!res.ok) {
@@ -23,7 +23,6 @@ export const AuthContextProvider = ({ children }) => {
           setLoading(false);
           return;
         }
-
 
         const data = await res.json();
 
@@ -42,7 +41,7 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   const userContext = (username) => setUsername(username);
-  
+
   const login = (userData) => {
     setUser(userData);
     setIsAuthenticated(true);

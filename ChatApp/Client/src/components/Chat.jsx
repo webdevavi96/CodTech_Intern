@@ -53,8 +53,9 @@ export default function Chat({ user, children }) {
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold">{activeUser.name}</span>
             <span
-              className={`text-xs ${activeUser.status === 'Online' ? 'text-green-700' : 'text-gray-700'
-                }`}
+              className={`text-xs ${
+                activeUser.status === 'Online' ? 'text-green-700' : 'text-gray-700'
+              }`}
             >
               {activeUser.status}
             </span>

@@ -4,16 +4,14 @@ import { AuthContext } from '../contexts/authContext';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 
-
 function Landing() {
-
   const { isAuthenticated, loading } = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (isAuthenticated) navigate("/home")
+    if (isAuthenticated) navigate('/home');
   }, [isAuthenticated, navigate]);
 
-  if (loading) return <Loader />
+  if (loading) return <Loader />;
 
   return (
     <div className="flex min-h-[calc(100vh-80px)] items-center bg-[#e1ecf7] px-6 py-10 md:px-16">
@@ -38,7 +36,7 @@ function Landing() {
           </p>
 
           <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate('/register')}
             className="rounded-full bg-[#009DFF] px-6 py-2 font-medium text-white transition hover:bg-blue-600"
           >
             REGISTER

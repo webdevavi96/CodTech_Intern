@@ -8,7 +8,6 @@ function Calls() {
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
   const [users, setUsers] = useState(null);
-  
 
   useEffect(() => {
     const handleResize = () => {

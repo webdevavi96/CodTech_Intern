@@ -55,14 +55,15 @@ export const loginUser = async (formData) => {
   }
 };
 
-export const logout = async () => {
+export const logout = async (user) => {
   const res = await fetch(`${url}/logout`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-  })
-    .then((res) => res.json())
-    .catch((err) => err);
+    body: JSON.stringify(user),
+  });
 
-  return res;
+  const data = await res.json();
+
+  return data;
 };

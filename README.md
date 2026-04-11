@@ -44,3 +44,11 @@ In these two days I have intigrated email otp verification using google smtp, re
 *Next steps:*
 
 Now I'll connect client side with backend and resolve the CORS ORIGIN ERRORS, establise connection for all user auth routes and add JWT Token for verification and user data security.
+
+### Day 9 & 10
+
+In thses two days, I connected Client and Server, resolved cors error, tested User registration, OTP verification, login, token based login, user data caching, jwt token implentation with expiry timer and logout features. Now the basic user intraction is done.
+
+*Next Steps:*
+
+Moving farward to implement CRUD operation for user profile. After implementing CRUD, I'll move to the main feature of this project and intigrate Live Chatting using *Socket.IO*.

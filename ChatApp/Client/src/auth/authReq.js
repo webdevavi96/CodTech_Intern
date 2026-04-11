@@ -40,24 +40,26 @@ export const loginUser = async (formData) => {
   try {
     const res = await fetch(`${url}/login`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     });
 
     const data = await res.json();
     if (!res.ok) throw new Error(res.message);
-console.log(data)
+
     return data;
   } catch (error) {
-    console.log("somethin", error)
+    console.log('somethin', error);
     throw new Error(error);
   }
 };
 
 export const logout = async () => {
-  const res = await fetch(url, {
-    method: method,
-    headers: headers,
+  const res = await fetch(`${url}/logout`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
   })
     .then((res) => res.json())
     .catch((err) => err);

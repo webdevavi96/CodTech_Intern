@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext } from 'react';
 
 export const AuthContext = createContext();
-
+const url = import.meta.env.VITE_AUTH_URL;
 
 export const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,33 +10,46 @@ export const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (user) {
-      setUser(JSON.parse(user));
-      setIsAuthenticated(true);
+    const getMe = async () => {
+      try {
+        const res = await fetch(`${url}/me`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (!res.ok) {
+          setUser(null);
+          setIsAuthenticated(false);
+          setLoading(false);
+          return;
+        }
+
+
+        const data = await res.json();
+
+        setUser(data?.user);
+        setIsAuthenticated(true);
+      } catch (err) {
+        console.error(err);
+        setUser(null);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
     };
-    setLoading(false);
+
+    getMe();
   }, []);
 
-  const userContext = (username) => {
-    setUsername(username);
-  }
-
+  const userContext = (username) => setUsername(username);
+  
   const login = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
-
-    //   set Headers headers
-
     setUser(userData);
     setIsAuthenticated(true);
     setLoading(false);
   };
 
   const logOut = () => {
-    localStorage.removeItem('user');
-
-    //   delete Headers headers
-
     setUser(null);
     setIsAuthenticated(false);
   };

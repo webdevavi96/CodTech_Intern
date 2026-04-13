@@ -25,8 +25,7 @@ export const AuthContextProvider = ({ children }) => {
         }
 
         const data = await res.json();
-
-        setUser(data?.user);
+        setUser(data?.user?.sanitisedUser);
         setIsAuthenticated(true);
       } catch (err) {
         console.error(err);

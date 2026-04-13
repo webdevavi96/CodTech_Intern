@@ -1,3 +1,5 @@
+import { io } from 'socket.io-client';
+
 export const endCall = () => {
   alert('Call Ended!');
 };
@@ -10,6 +12,6 @@ export const addNewPeople = () => {
   return;
 };
 
-export const chat = () => {
-  return;
-};
+export function chat() {
+  return io(import.meta.env.VITE_CHAT_URL);
+}

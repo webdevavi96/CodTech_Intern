@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { UserCard, Chat } from '../components/components.js';
 import { useNavigate } from 'react-router-dom';
+import { ChatContext } from '../contexts/chatContext.jsx';
+import { Loader } from '../components/components.js';
 
 function Home() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMobileUser, setIsMobileUser] = useState(false);
+  const { users, loading } = useContext(ChatContext);
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [users, setUsers] = useState(null);
 
   const handleClick = (user) => {
     if (window.innerWidth < 1024) {
@@ -29,9 +30,15 @@ function Home() {
   return (
     <div className="grid h-[calc(90vh-72px)] grid-cols-1 lg:grid-cols-[350px_1fr]">
       <div className="space-y-2 overflow-y-auto p-3">
-        {users?.map((user) => {
-          return <UserCard key={user.id} user={user} onClick={handleClick} />;
-        })}
+        {loading ? (
+          <Loader>
+            <h1>Loading Users</h1>
+          </Loader>
+        ) : (
+          users?.map((user) => {
+            return <UserCard key={user.id} user={user} onClick={handleClick} />;
+          })
+        )}
       </div>
 
       {!isMobileUser && (

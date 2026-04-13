@@ -1,26 +1,14 @@
-import { app } from './app.js';
-import { client } from './src/config/redis.conf.js';
+import { app, server, port } from './app.js';
 import { connect } from './src/config/conn.db.js';
 
-const port = process.env.APP_PORT;
-
-app.get('/', async (req, res) => {
-  await client.set('mykey', 'Santos pakhandi hai!');
-  return res.send('Working.');
-});
-
-app.get('/data', async (req, res) => {
-  const value = await client.get('mykey');
-  res.send(`Something is comming from redis: ${value}`);
-});
-
+// DB Connection Main server running
 connect()
   .then(() => {
-    app.on('error', (error) => {
+    server.on('error', (error) => {
       console.error(error);
       throw error;
     });
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log('Server is running on port: ', port);
     });
   })

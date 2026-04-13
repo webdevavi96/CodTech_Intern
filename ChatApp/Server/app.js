@@ -1,15 +1,38 @@
-import express from 'express';
 import cors from 'cors';
+import express from 'express';
+import { Server } from 'socket.io';
+import { createServer } from 'http';
+import cookieParser from 'cookie-parser';
+import userRouter from './src/routes/auth.routes.js';
+import { Messages } from './src/models/Messages.models.js';
 
 const app = express();
+
+const port = process.env.APP_PORT;
+const server = createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: process.env.ORIGIN,
+    methods: ['GET', 'POST'],
+  },
+});
 
 app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
-
-import userRouter from './src/routes/auth.routes.js';
-import cookieParser from 'cookie-parser';
-
 app.use('/api/auth', userRouter);
+// app.set('io', io);
 
-export { app };
+io.on('connection', (socket) => {
+  socket.on('send_message', async ({ senderId, receiverId, text }) => {
+    const message = await Messages.create({ sentBy: senderId, sentTo: receiverId, content: text });
+
+    io.to(receiverId).emit('receive_message', message);
+    io.to(senderId).emit('receive_message', message);
+  });
+
+  socket.on('disconnect', () => console.log('User disconnected!: ', socket.id));
+});
+
+export { app, server, port };

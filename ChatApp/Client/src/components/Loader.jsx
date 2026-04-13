@@ -1,7 +1,14 @@
 import React from 'react';
 import AppLogo from '../assets/liveLogo.jpg';
 
-function Loader() {
+function Loader({ children }) {
+  if (children)
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center bg-[#e1ecf7]">
+        {children}
+      </div>
+    );
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center bg-[#e1ecf7]">
       <img

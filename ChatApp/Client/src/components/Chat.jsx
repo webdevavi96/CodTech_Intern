@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CiMenuKebab } from 'react-icons/ci';
 import { MdAddIcCall } from 'react-icons/md';
@@ -6,12 +6,15 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { getLastActive } from '../utils/getLastActive';
 import ChatBubble from './ChatBubble';
 import SendMessageBox from './SendMessageBox';
+import { chat } from '../services/callActions';
+import { ChatContext } from '../contexts/chatContext';
 
 export default function Chat({ user, children }) {
+  const socket = useRef(null);
   const { id } = useParams();
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
-  const [users, setUsers] = useState(null);
+  const { users } = useContext(ChatContext);
 
   useEffect(() => {
     if (window.innerWidth < 1024) setIsMobileUser(true);
@@ -23,6 +26,10 @@ export default function Chat({ user, children }) {
   const handleClick = () => {
     navigate(window.history.back());
   };
+
+  useEffect(() => {
+    socket.current = chat();
+  }, []);
 
   if (!activeUser) {
     return <div className="flex h-full w-full flex-col bg-[#e1ecf7]">{children}</div>;

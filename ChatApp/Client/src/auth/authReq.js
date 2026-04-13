@@ -56,6 +56,7 @@ export const loginUser = async (formData) => {
 };
 
 export const logout = async (user) => {
+  console.log(user);
   const res = await fetch(`${url}/logout`, {
     method: 'POST',
     credentials: 'include',

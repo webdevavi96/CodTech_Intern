@@ -52,3 +52,11 @@ In thses two days, I connected Client and Server, resolved cors error, tested Us
 *Next Steps:*
 
 Moving farward to implement CRUD operation for user profile. After implementing CRUD, I'll move to the main feature of this project and intigrate Live Chatting using *Socket.IO*.
+
+### Day 11 & 12
+
+In these two days I fixed auth middleware, implemented refresh jwt token function when token is expired, improved UI when there is no user available to chat and calls, cleane log out function.
+
+*Next Steps:*
+
+I know I said to implement some features but there was several bugs which causes isseus in UI so I thaught I'll fix them first then move farward to implement live chat feature.

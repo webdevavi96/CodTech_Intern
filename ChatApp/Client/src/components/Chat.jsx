@@ -11,7 +11,7 @@ import { ChatContext } from '../contexts/chatContext';
 
 export default function Chat({ user, children }) {
   const socket = useRef(null);
-  const { id } = useParams();
+  const { _id } = useParams();
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
   const { users } = useContext(ChatContext);
@@ -21,15 +21,15 @@ export default function Chat({ user, children }) {
     else setIsMobileUser(false);
   });
 
-  const activeUser = user || users?.find((u) => u.id.toString() === id);
+  const activeUser = user || users?.find((u) => u._id.toString() === _id);
 
   const handleClick = () => {
     navigate(window.history.back());
   };
 
-  useEffect(() => {
-    socket.current = chat();
-  }, []);
+  // useEffect(() => {
+  //   socket.current = chat();
+  // }, []);
 
   if (!activeUser) {
     return <div className="flex h-full w-full flex-col bg-[#e1ecf7]">{children}</div>;

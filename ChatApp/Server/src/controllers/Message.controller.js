@@ -1,6 +1,7 @@
-import { asyncHandler } from '../utils/asyncHandler';
+import { asyncHandler } from '../utils/asyncHandler.js';
 import { Messages } from '../models/Messages.models.js';
 import { User } from '../models/User.models.js';
+import mongoose from 'mongoose';
 
 export const sendMessage = asyncHandler(async (req, res) => {
   try {
@@ -31,12 +32,17 @@ export const sendMessage = asyncHandler(async (req, res) => {
 
 export const getChat = asyncHandler(async (req, res) => {
   const receiverId = req.params.userId;
-  const sender = req.user._id;
+
+  if (!mongoose.Types.ObjectId.isValid(receiverId))
+    return res.status(400).json({ message: 'reciever id is required!' });
+
+  const receiverObjectId = new mongoose.Types.ObjectId(receiverId);
+  const senderObjectId = new mongoose.Types.ObjectId(req.user._id);
 
   const messages = await Messages.find({
     $or: [
-      { sentBy: sender, sentTo: receiverId },
-      { sentBy: receiverId, sentTo: sender },
+      { sentBy: senderObjectId, sentTo: receiverObjectId },
+      { sentBy: receiverObjectId, sentTo: senderObjectId },
     ],
   }).sort({ createdAt: 1 });
 
@@ -50,7 +56,6 @@ export const getChat = asyncHandler(async (req, res) => {
 
 export const getUsers = asyncHandler(async (req, res) => {
   const { page, limit, sortBy, sortType } = req.query;
-  console.log(req);
   const pageNum = parseInt(page) || 1;
   const limitNum = parseInt(limit) || 10;
   const skip = (pageNum - 1) * limitNum;
@@ -60,7 +65,11 @@ export const getUsers = asyncHandler(async (req, res) => {
 
   const sortOrder = sortType === 'asc' ? 1 : -1;
 
+  const userId = new mongoose.Types.ObjectId(req.user._id);
+
+
   const users = await User.aggregate([
+    { $match: { _id: { $ne: userId } } },
     { $sort: { [sortField]: sortOrder } },
     { $skip: skip },
     { $limit: limitNum },

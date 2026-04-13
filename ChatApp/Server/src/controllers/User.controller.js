@@ -3,6 +3,7 @@ import { User } from '../models/User.models.js';
 import { sendOtp } from '../config/config.js';
 import { client } from '../config/redis.conf.js';
 import jwt from 'jsonwebtoken';
+import { select } from 'three/tsl';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -51,9 +52,8 @@ export const login = asyncHandler(async (req, res) => {
   const sanitisedUser = user.toObject();
   delete sanitisedUser.password;
 
-  await client.set(user.username, JSON.stringify({ sanitisedUser }), {
+  await client.set(`user:${user._id}`, JSON.stringify(sanitisedUser), {
     EX: 1800,
-    NX: true,
   });
 
   return res
@@ -71,7 +71,7 @@ export const logOut = asyncHandler(async (req, res) => {
   const userId = req.body._id;
   await User.findByIdAndUpdate(userId, { $unset: { refreshToken: '' } }, { new: true });
 
-  await client.del(req.body.username);
+  await client.del(req.body._id);
 
   return res
     .status(200)
@@ -167,48 +167,22 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
 
 export const getMe = asyncHandler(async (req, res) => {
   try {
-    let decodedToken;
+    const userId = req.user._id;
+    const cacheKey = `user:${userId}`;
+    let user = await client.get(cacheKey);
 
-    try {
-      decodedToken = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET_KEY);
-    } catch (err) {
-      if (err.name !== 'TokenExpiredError') {
-        return res.status(401).json({ message: 'Token expired!' });
-      }
+    if (user) user = JSON.parse(user);
+    else {
+      user = await User.findById(userId).select('-password');
 
-      // If access is token expired, we will use refresh token to generate a new access token
-
-      const refreshToken = req.cookies.refreshToken;
-      if (!refreshToken) throw new Error();
-
-      const decodedRefreshToken = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
-
-      const newAccessToken = jwt.sign(
-        { _id: decodedRefreshToken._id },
-        process.env.JWT_SECRET_KEY,
-        { expiresIn: '15m' }
-      );
-
-      res.cookie('accessToken', newAccessToken, accessCookieOptions);
-      decodedToken = decodedRefreshToken;
-    }
-
-    let user;
-
-    user = await client.get(decodedToken.username);
-
-    if (!user) {
-      user = await User.findById(decodedToken._id).select('-password');
-      await client.set(user.username, JSON.stringify({ user }), {
+      if (!user) return res.status(404).json({ message: 'User not found!', success: false });
+      await client.set(cacheKey, JSON.stringify(user), {
         EX: 1800,
-        NX: true,
       });
-    } else {
-      user = JSON.parse(user);
     }
 
-    return res.status(200).json({ message: 'success', success: true, user: user });
+    return res.status(200).json({ succes: true, data: user });
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid token' });
+    return res.status(500).json({ message: 'Internal server error', success: false });
   }
 });

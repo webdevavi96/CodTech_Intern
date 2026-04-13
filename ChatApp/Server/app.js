@@ -3,8 +3,11 @@ import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
 import cookieParser from 'cookie-parser';
-import userRouter from './src/routes/auth.routes.js';
+
 import { Messages } from './src/models/Messages.models.js';
+
+import userRouter from './src/routes/auth.routes.js';
+import chatRouter  from "./src/routes/chat.routes.js";
 
 const app = express();
 
@@ -22,6 +25,7 @@ app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', userRouter);
+app.use("/api/chat", chatRouter);
 // app.set('io', io);
 
 io.on('connection', (socket) => {

@@ -12,7 +12,7 @@ function Home() {
 
   const handleClick = (user) => {
     if (window.innerWidth < 1024) {
-      navigate(`/chat/${user.id}`);
+      navigate(`/chat/${user._id}`);
     } else setSelectedUser(user);
   };
 
@@ -35,13 +35,15 @@ function Home() {
             <h1>Loading Users</h1>
           </Loader>
         ) : (
-          users?.map((user) => {
-            return <UserCard key={user.id} user={user} onClick={handleClick} />;
-          })
+          users?.length > 0 ? (users.map((user) => {
+            return <UserCard key={user._id} user={user} onClick={handleClick} />;
+          })) : (<div className='flex w-full h-full justify-center items-center'>
+                <h1>No User available to chat</h1>
+          </div>)
         )}
       </div>
 
-      {!isMobileUser && (
+      {users !== null && (!isMobileUser && (
         <div className="hidden h-full lg:flex">
           <Chat user={selectedUser}>
             {!selectedUser && (
@@ -51,7 +53,7 @@ function Home() {
             )}
           </Chat>
         </div>
-      )}
+      ))}
     </div>
   );
 }

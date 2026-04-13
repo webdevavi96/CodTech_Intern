@@ -1,4 +1,4 @@
-import { app, server, port } from './app.js';
+import {  server, port } from './app.js';
 import { connect } from './src/config/conn.db.js';
 
 // DB Connection Main server running

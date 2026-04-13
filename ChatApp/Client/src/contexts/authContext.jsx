@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect, createContext, useRef } from 'react';
 
 export const AuthContext = createContext();
 const url = import.meta.env.VITE_AUTH_URL;
@@ -8,6 +8,7 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState(null);
   const [loading, setLoading] = useState(true);
+  const didRun = useRef(false);
 
   useEffect(() => {
     const getMe = async () => {
@@ -16,7 +17,6 @@ export const AuthContextProvider = ({ children }) => {
           method: 'GET',
           credentials: 'include',
         });
-
         if (!res.ok) {
           setUser(null);
           setIsAuthenticated(false);
@@ -25,7 +25,7 @@ export const AuthContextProvider = ({ children }) => {
         }
 
         const data = await res.json();
-        setUser(data?.user?.sanitisedUser);
+        setUser(data?.data);
         setIsAuthenticated(true);
       } catch (err) {
         console.error(err);
@@ -36,7 +36,9 @@ export const AuthContextProvider = ({ children }) => {
       }
     };
 
-    getMe();
+   if(didRun.current)return;
+   getMe();
+   didRun.current = true;
   }, []);
 
   const userContext = (username) => setUsername(username);

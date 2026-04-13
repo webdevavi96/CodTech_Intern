@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import CallerCard from '../components/CallerCard';
 import CallPage from '../components/CallPage';
 import { useNavigate } from 'react-router-dom';
+import { ChatContext } from '../contexts/chatContext';
+import Loader from '../components/Loader';
 
 function Calls() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMobileUser, setIsMobileUser] = useState(false);
+  const { users, loading } = useContext(ChatContext)
   const navigate = useNavigate();
-  const [users, setUsers] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,12 +33,18 @@ function Calls() {
   return (
     <div className="grid h-[calc(90vh-72px)] grid-cols-1 gap-4 p-4 lg:grid-cols-[1.5fr_1fr]">
       <div className="space-y-3 overflow-y-auto rounded-2xl p-4">
-        {users.map((user) => (
-          <CallerCard key={user.id} user={user} onClick={handleClick} />
-        ))}
+        {loading ? (
+          <Loader />
+        ) : users?.length > 0 ? (
+          users.map((user) => (
+            <CallerCard key={user._id} user={user} onClick={handleClick} />
+          ))
+        ) : (
+          <p>No users found</p>
+        )}
       </div>
 
-      {!isMobileUser && (
+      {loading ? <Loader /> : (!isMobileUser && (
         <div className="grid grid-rows-[auto_1fr_auto]">
           <div />
 
@@ -45,16 +53,16 @@ function Calls() {
               {selectedUser ? (
                 <CallPage user={selectedUser} />
               ) : (
-                <div className="flex h-full items-center justify-center text-gray-500">
+                users?.length > 0 ? (<div className="flex h-full items-center justify-center text-gray-500">
                   Select a user to start a call
-                </div>
+                </div>) : (<p></p>)
               )}
             </div>
           </div>
 
           <div />
         </div>
-      )}
+      ))}
     </div>
   );
 }

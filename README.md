@@ -2,61 +2,14 @@
 
 This repo contains my all projects of my Internship at CODTECH IT SOLUTIONS.
 
-## [NewsProject](https://github.com/webdevavi96/CodTech_Intern/tree/main/NewsProject)
+## [News Project](https://github.com/webdevavi96/CodTech_Intern/tree/main/NewsProject)
 
-### Day - 1
+This is a simple React app I build top showcase my knowledge of API data handeling and Hooks understanding. I used Public news API to fetch news and show in UI using React Hooks (useEffect for fetch news from data source on page mount and paginate through using useState when user clicks on load more button).
 
-Today I started building my first project which is a new website which fetches new and articles from public news API's andshows on website. Today I completed the setup of my project and built layout with navigation bar and footer.
+I used better UI practices, wrote clean and scalable code using best practices and Component based architecture. I used environment variables to hide API keys and sensitve data from being exposed. Created re-usable components.
 
-### Day - 2 & 3
+This project is open source and anyone can use it but you have to get an API key from [News API](https://newsapi.org/) and use it .env file. For refrence of variables, I gave an .env-sample file.
 
-In these two days I improved the UI and API calls for latest news which done by passing the date dynamically. Added a loading screen during the news loads first time.
+You can walk through these steps for set-up of this project -
 
-#### Project Snapshots
-
-These three images are represntation of my [news project](https://github.com/webdevavi96/CodTech_Intern/tree/main/NewsProject)
-
-*Home Page*
-![Home Page](/ProjectSnapshots/home.png)
-
-*About Page*
-![About Page](/ProjectSnapshots/about.png)
-
-*Responsive Page*
-![Responsive Page](/ProjectSnapshots/responsive.png)
-
------------
-
-## [ChatApp](https://github.com/webdevavi96/CodTech_Intern/tree/main/ChatApp)
-
-### Day 4 & 5
-
-In these two days I worked on UI design, System Design and Database relation diagram. On day 4 I started client side developement and built Landing page, Navbar, Footer and placed them into React Outlet to render in browser using createbrowserroutes. All routes mapping is done. Now moving farwad to build other pages.
-
-### Day 5 & 6
-
-In these two days, I finished Chat page layout and Calls page layout with some basic functionalities. The UI of this project is inspired by Whatsapp UI. Managed status using useState.
-
-### Day 7 & 8
-
-In these two days I have intigrated email otp verification using google smtp, redis for caching, connected mongodb, secured environment veriables and accessing using dotnev package.
-
-*Next steps:*
-
-Now I'll connect client side with backend and resolve the CORS ORIGIN ERRORS, establise connection for all user auth routes and add JWT Token for verification and user data security.
-
-### Day 9 & 10
-
-In thses two days, I connected Client and Server, resolved cors error, tested User registration, OTP verification, login, token based login, user data caching, jwt token implentation with expiry timer and logout features. Now the basic user intraction is done.
-
-*Next Steps:*
-
-Moving farward to implement CRUD operation for user profile. After implementing CRUD, I'll move to the main feature of this project and intigrate Live Chatting using *Socket.IO*.
-
-### Day 11 & 12
-
-In these two days I fixed auth middleware, implemented refresh jwt token function when token is expired, improved UI when there is no user available to chat and calls, cleane log out function.
-
-*Next Steps:*
-
-I know I said to implement some features but there was several bugs which causes isseus in UI so I thaught I'll fix them first then move farward to implement live chat feature.
+- Steps will added here soon.

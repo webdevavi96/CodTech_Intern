@@ -1,4 +1,4 @@
-import {  server, port } from './app.js';
+import { server, port } from './app.js';
 import { connect } from './src/config/conn.db.js';
 
 // DB Connection Main server running
@@ -8,7 +8,7 @@ connect()
       console.error(error);
       throw error;
     });
-    server.listen(port, () => {
+    server.listen(port, '0.0.0.0', () => {
       console.log('Server is running on port: ', port);
     });
   })

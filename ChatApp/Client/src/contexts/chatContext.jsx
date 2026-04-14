@@ -3,52 +3,56 @@ import { AuthContext } from './authContext';
 
 export const ChatContext = createContext();
 
-export const ChatContextProvier = ({ children }) => {
-    const [users, setUsers] = useState(null);
-    const [loaing, setLoading] = useState(false);
-    const didRun = useRef(false);
-    const { isAuthenticated } = useContext(AuthContext);
+export const ChatContextProvider = ({ children }) => {
+  const [users, setUsers] = useState(null);
+  const [loaing, setLoading] = useState(false);
+  const didRun = useRef(false);
+  const { isAuthenticated } = useContext(AuthContext);
 
-    useEffect(() => {
-        const getUsers = async () => {
-            try {
-                const query = {
-                    page: 1,
-                    limit: 1,
-                    sortBy: 'createdAt',
-                    sortType: 'asc',
-                };
-
-                const queryString = new URLSearchParams(query).toString();
-
-                const res = await fetch(`${import.meta.env.VITE_USERS_URL}/users/?${queryString}`, {
-                    method: "GET",
-                    credentials: 'include',
-                });
-
-                if (!res.ok) {
-                    setUsers(null);
-                    setLoading(false);
-                }
-
-                const data = await res?.json();
-
-                const usersList = await data?.data?.length == 0 ? null : data?.data
-                console.log(usersList)
-                setUsers(usersList);
-                setLoading(false);
-
-            } catch (error) {
-                setUsers(null);
-            } finally {
-                setLoading(false);
-            }
+  useEffect(() => {
+    const getUsers = async () => {
+      console.log('mouned', didRun.current);
+      try {
+        const query = {
+          page: 1,
+          limit: 1,
+          sortBy: 'createdAt',
+          sortType: 'asc',
         };
-        if (!isAuthenticated) return
-        if (didRun.current) return
-        getUsers();
-        didRun.current = true
-    }, []);
 
-    return <ChatContext.Provider value={{ users, loaing }}>{children}</ChatContext.Provider>;
+        const queryString = new URLSearchParams(query).toString();
+
+        const res = await fetch(`${import.meta.env.VITE_USERS_URL}/users/?${queryString}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        console.log(res);
+        if (!res.ok) {
+          setUsers(null);
+          setLoading(false);
+        }
+
+        const data = await res?.json();
+
+        console.log(data);
+
+        const usersList = (await data?.data?.length) == 0 ? null : data?.data;
+        console.log(usersList);
+        setUsers(usersList);
+        setLoading(false);
+      } catch (error) {
+        setUsers(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    console.log(isAuthenticated);
+    if (!isAuthenticated) return;
+    if (didRun.current) return;
+    getUsers();
+    didRun.current = true;
+  }, [isAuthenticated]);
+
+  return <ChatContext.Provider value={{ users, loaing }}>{children}</ChatContext.Provider>;
 };

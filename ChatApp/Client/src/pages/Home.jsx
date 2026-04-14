@@ -11,7 +11,7 @@ function Home() {
   const navigate = useNavigate();
 
   const handleClick = (user) => {
-    if (window.innerWidth < 1024) {
+    if (isMobileUser) {
       navigate(`/chat/${user._id}`);
     } else setSelectedUser(user);
   };
@@ -28,24 +28,28 @@ function Home() {
   }, []);
 
   return (
-    <div className="grid h-[calc(90vh-72px)] grid-cols-1 lg:grid-cols-[350px_1fr]">
+    <div className="grid max-h-full min-h-0 grid-cols-1 gap-4 lg:grid-cols-[320px_1fr]">
       <div className="space-y-2 overflow-y-auto p-3">
         {loading ? (
           <Loader>
             <h1>Loading Users</h1>
           </Loader>
-        ) : (
-          users?.length > 0 ? (users.map((user) => {
+        ) : users?.length > 0 ? (
+          users.map((user) => {
             return <UserCard key={user._id} user={user} onClick={handleClick} />;
-          })) : (<div className='flex w-full h-full justify-center items-center'>
-                <h1>No User available to chat</h1>
-          </div>)
+          })
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <h1>No User available to chat</h1>
+          </div>
         )}
       </div>
 
-      {users !== null && (!isMobileUser && (
-        <div className="hidden h-full lg:flex">
-          <Chat user={selectedUser}>
+      {users?.length === 0 ? (
+        <p>No users found</p>
+      ) : !isMobileUser ? (
+        <div className="flex h-full min-h-0">
+          <Chat selected={selectedUser}>
             {!selectedUser && (
               <div className="flex h-full items-center justify-center">
                 <p>Select people to start new chat</p>
@@ -53,7 +57,7 @@ function Home() {
             )}
           </Chat>
         </div>
-      ))}
+      ) : null}
     </div>
   );
 }

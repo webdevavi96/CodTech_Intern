@@ -16,13 +16,14 @@ function Register() {
   const [wrongPass, setWrongPass] = useState(false);
 
   const onSubmit = async (data) => {
+    console.log(data);
+
     if (!data) return;
 
     Reflect.deleteProperty(data, 'confirmPassword');
 
-    console.log(data);
-
     const res = await registerUser(data);
+    alert(data);
 
     console.log(res);
 
@@ -84,6 +85,9 @@ function Register() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
+            {wrongPass && (
+              <p className="text-center text-xl text-red-600">Passwords didn't matched!</p>
+            )}
             <div className="relative">
               <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
               <input

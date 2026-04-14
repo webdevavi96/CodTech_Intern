@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-
 const isProduction = process.env.NODE_ENV === 'production';
 
 export const authJwt = (req, res, next) => {
@@ -13,7 +12,6 @@ export const authJwt = (req, res, next) => {
       req.user = decoded;
       return next();
     } catch (err) {
-
       const refreshToken = req.cookies.refreshToken;
 
       if (!refreshToken) {
@@ -40,7 +38,7 @@ export const authJwt = (req, res, next) => {
       req.user = decodedRefresh;
       return next();
     }
-  } catch (error) {    
+  } catch (error) {
     return res.status(401).json({ message: 'Authentication failed' });
   }
 };

@@ -36,9 +36,9 @@ export const AuthContextProvider = ({ children }) => {
       }
     };
 
-   if(didRun.current)return;
-   getMe();
-   didRun.current = true;
+    if (didRun.current) return;
+    getMe();
+    didRun.current = true;
   }, []);
 
   const userContext = (username) => setUsername(username);
@@ -54,6 +54,7 @@ export const AuthContextProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  console.log(isAuthenticated);
   return (
     <AuthContext.Provider
       value={{

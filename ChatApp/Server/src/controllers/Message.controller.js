@@ -67,7 +67,6 @@ export const getUsers = asyncHandler(async (req, res) => {
 
   const userId = new mongoose.Types.ObjectId(req.user._id);
 
-
   const users = await User.aggregate([
     { $match: { _id: { $ne: userId } } },
     { $sort: { [sortField]: sortOrder } },

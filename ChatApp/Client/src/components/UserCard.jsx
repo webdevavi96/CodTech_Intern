@@ -29,7 +29,7 @@ function UserCard({ user, onClick }) {
         />
 
         <div>
-          <h2 className="text-sm font-semibold">{user?.name}</h2>
+          <h2 className="text-sm font-semibold">{user?.fullname}</h2>
           <p className="text-xs opacity-90">{user?.message}</p>
         </div>
       </div>

@@ -20,6 +20,7 @@ function Login() {
     if (!res.success) {
       return;
     }
+    console.log(res);
 
     login(res?.data);
     navigate(from, { replace: true });

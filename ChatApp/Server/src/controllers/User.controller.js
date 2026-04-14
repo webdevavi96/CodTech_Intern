@@ -2,17 +2,16 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { User } from '../models/User.models.js';
 import { sendOtp } from '../config/config.js';
 import { client } from '../config/redis.conf.js';
-import jwt from 'jsonwebtoken';
-import { select } from 'three/tsl';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+// The hidden bug which takes me to debug 3 days. Wrong maxAge in both cookie options. In previous version the access token was alive for 7 days and refresh token was alive for 15 minutes which was inversed logic.
 const refreshCookieOptions = {
   httpOnly: true,
   secure: isProduction,
   sameSite: isProduction ? 'None' : 'Lax',
   path: '/',
-  maxAge: 15 * 60 * 1000,
+  maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
 const accessCookieOptions = {
@@ -20,7 +19,7 @@ const accessCookieOptions = {
   secure: isProduction,
   sameSite: isProduction ? 'None' : 'Lax',
   path: '/',
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+  maxAge: 15 * 60 * 1000,
 };
 
 export const login = asyncHandler(async (req, res) => {

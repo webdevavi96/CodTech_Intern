@@ -33,18 +33,36 @@ app.use('/api/auth', userRouter);
 app.use('/api/chat', chatRouter);
 // app.set('io', io);
 
+const activeUsers = new Map();
+
 io.on('connection', (socket) => {
   socket.on('join', (userId) => {
+    socket.userId = userId;
+
+    if (!activeUsers.has(userId)) activeUsers.set(userId, new Set());
+
+    activeUsers.get(userId).add(socket.id);
+
     socket.join(userId);
-    socket.broadcast.emit('status', {
-      userId: socket.userId,
-      status: 'Online',
+
+    if (activeUsers.get(userId).size === 1) {
+      socket.to(userId).emit('status', {
+        userId,
+        status: 'Online',
+      });
+    }
+  });
+
+  socket.on('check_status', (userId, callback) => {
+    const isOnline = activeUsers.has(userId);
+
+    callback({
+      userId,
+      status: isOnline ? 'Online' : 'Offline',
     });
-    console.log(`User ${userId} joined room`);
   });
 
   socket.on('send_message', async ({ senderId, receiverId, text }) => {
-
     const message = await Messages.create({
       sentBy: senderId,
       sentTo: receiverId,
@@ -57,11 +75,25 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('User disconnected!: ', socket.id);
-    socket.broadcast.emit('status', {
-      userId: socket.userId,
-      status: 'Offline',
-    });
+    const userId = socket.userId;
+    if (!userId || !activeUsers.has(userId)) return;
+
+    const activeSockets = activeUsers.get(userId);
+    activeSockets.delete(socket.id);
+
+    if (activeSockets.size === 0) {
+      activeUsers.delete(userId);
+
+      socket.broadcast.emit('status', {
+        userId,
+        status: 'Offline',
+      });
+    }
   });
+});
+
+app.get('/', (req, res) => {
+  res.send('hello');
 });
 
 export { app, server, port };

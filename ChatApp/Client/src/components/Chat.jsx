@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CiMenuKebab } from 'react-icons/ci';
 import { MdAddIcCall } from 'react-icons/md';
@@ -9,12 +9,16 @@ import SendMessageBox from './SendMessageBox';
 import { chat } from '../services/callActions';
 import { ChatContext } from '../contexts/chatContext';
 import { AuthContext } from '../contexts/authContext';
+import { fetchChat } from '../services/chatService';
 
 export default function Chat({ selected, children }) {
   const [isMobileUser, setIsMobileUser] = useState(false);
+  const [showLoadMore, setShowLoadMore] = useState(false);
   const [sendMessage, setSendMessage] = useState('');
-  const [receivedMessage, setReceivedMessage] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [isActive, setIsActive] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
   const { users } = useContext(ChatContext);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -22,22 +26,51 @@ export default function Chat({ selected, children }) {
   const socket = useRef(null);
   const { id } = useParams();
 
+  const activeUser = selected || users?.find((u) => u._id.toString() === id);
+
+  const isNearTop = () => {
+    const el = containerRef.current;
+    if (!el) return false;
+
+    return el.scrollTop < 50;
+  };
+
+  // Auto scroll when new message arrives
   useEffect(() => {
     if (!containerRef.current) return;
 
     containerRef.current.scrollTop = containerRef.current.scrollHeight;
-  }, [receivedMessage]);
+  }, [messages]);
 
+  // Show load more button when user reaches on the top of message container
   useEffect(() => {
-    if (window.innerWidth < 1024) setIsMobileUser(true);
-    else setIsMobileUser(false);
-  });
+    const el = containerRef.current;
+    if (!el) return;
 
-  const activeUser = selected || users?.find((u) => u._id.toString() === id);
+    const handleScroll = () => {
+      const isNearTop = el.scrollTop < 50;
+      setShowLoadMore(isNearTop);
+    };
+
+    el.addEventListener('scroll', handleScroll);
+
+
+    handleScroll();
+
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Checking cleint's devices width for routing in small devices
+  useEffect(() => {
+    setIsMobileUser(window.innerWidth < 1024);
+  }, []);
+
+  // Back back in small screen devices
   const handleClick = () => {
     navigate(window.history.back());
   };
 
+  // Connecting socket for live chat
   useEffect(() => {
     socket.current = chat();
 
@@ -48,22 +81,17 @@ export default function Chat({ selected, children }) {
     };
   }, []);
 
+  // Checking user active status when page mounted
   useEffect(() => {
-    if (!socket.current || !activeUser) return;
+    if (!socket.current || !activeUser?._id) return;
 
-    const handler = (data) => {
-      if (data.userId === activeUser._id) {
-        setIsActive(data.status === 'Online');
-      }
-    };
-
-    socket.current.on('status', handler);
-
-    return () => {
-      socket.current.off('status', handler);
-    };
+    socket.current.emit('check_status', activeUser._id, (res) => {
+      setIsActive(res.status === 'Online');
+    });
   }, [activeUser]);
 
+
+  // Sending messages through sockets
   useEffect(() => {
     if (!socket.current || sendMessage === '') return;
 
@@ -78,11 +106,12 @@ export default function Chat({ selected, children }) {
     );
   }, [sendMessage]);
 
+  // Receiving messages and upating UI
   useEffect(() => {
     if (!socket.current) return;
 
     socket.current.on('receive_message', (data) => {
-      setReceivedMessage((pre) => [...pre, data]);
+      setMessages((pre) => [...pre, data]);
     });
 
     return () => {
@@ -90,10 +119,52 @@ export default function Chat({ selected, children }) {
     };
   }, []);
 
+  // Getting old messages when user first visits
+  useEffect(() => {
+    const getChat = async () => {
+      if (!activeUser?._id) return;
+      const res = await fetchChat(activeUser?._id);
+      setMessages(res?.data);
+      setPage(2);
+      setHasMore(res?.data?.length === 10);
+    };
+    getChat();
+
+  }, [activeUser]);
+
+
+  // Setting new messages to send via socket
   const messageHandler = (message) => {
     setSendMessage(message);
   };
 
+  // Handler function for loading more messages
+  const loadMoreMessages = async () => {
+    if (!hasMore) return;
+
+    const el = containerRef.current;
+    if (!el) return;
+
+    const prevHeight = el.scrollHeight;
+
+    const res = await fetchChat(activeUser._id, page);
+
+    setMessages((prev) => [...(res?.data || []), ...prev]);
+
+    setPage((prev) => prev + 1);
+
+    if (res?.data.length < 10) {
+      setHasMore(false);
+    }
+
+    setTimeout(() => {
+      const newHeight = el.scrollHeight;
+      el.scrollTop = newHeight - prevHeight;
+    }, 0);
+  };
+
+
+  // Initial check if there is user selected or not
   if (!activeUser) {
     return <div className="flex h-full w-full flex-col bg-[#e1ecf7]">{children}</div>;
   }
@@ -118,7 +189,7 @@ export default function Chat({ selected, children }) {
           </div>
 
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold">{activeUser.fullname}</span>
+            <span className="text-sm font-semibold">{activeUser.username}</span>
             <span className={`text-xs ${isActive ? 'text-green-700' : 'text-gray-700'}`}></span>
           </div>
         </div>
@@ -137,7 +208,18 @@ export default function Chat({ selected, children }) {
         className="no-scrollbar max-h-screen flex-1 space-y-2 overflow-y-auto px-4 py-3"
         ref={containerRef}
       >
-        {receivedMessage.map((msg) => (
+        {showLoadMore && (
+          <div className="text-center">
+            <button
+              onClick={loadMoreMessages}
+              className="bg-transparent text-blue-800 underline px-3 py-1 rounded"
+            >
+              Load more
+            </button>
+          </div>
+        )}
+
+        {messages?.map((msg) => (
           <div
             key={msg._id}
             className={`flex ${msg.sentBy === user._id ? 'justify-end' : 'min-h-0 justify-start'}`}

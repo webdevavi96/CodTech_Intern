@@ -15,7 +15,7 @@ export const ChatContextProvider = ({ children }) => {
       try {
         const query = {
           page: 1,
-          limit: 1,
+          limit: 10,
           sortBy: 'createdAt',
           sortType: 'asc',
         };

@@ -3,6 +3,7 @@ import { Messages } from '../models/Messages.models.js';
 import { User } from '../models/User.models.js';
 import mongoose from 'mongoose';
 
+// This methoe is unuesd for now.
 export const sendMessage = asyncHandler(async (req, res) => {
   try {
     const { reciverId, text } = req.body;
@@ -31,7 +32,15 @@ export const sendMessage = asyncHandler(async (req, res) => {
 });
 
 export const getChat = asyncHandler(async (req, res) => {
+  const { page, limit, sortBy, sortType } = req.query;
   const receiverId = req.params.userId;
+
+  const pageNum = parseInt(page) || 1;
+  const limitNum = parseInt(limit) || 10;
+  const skip = (pageNum - 1) * limitNum;
+  const sortOrder = sortType === 'dsc' ? -1 : 1;
+  const allowedSortFields = ['createdAt', 'updatedAt', 'sentBy', 'sentTo'];
+  const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
 
   if (!mongoose.Types.ObjectId.isValid(receiverId))
     return res.status(400).json({ message: 'reciever id is required!' });
@@ -44,9 +53,12 @@ export const getChat = asyncHandler(async (req, res) => {
       { sentBy: senderObjectId, sentTo: receiverObjectId },
       { sentBy: receiverObjectId, sentTo: senderObjectId },
     ],
-  }).sort({ createdAt: 1 });
+  })
+    .sort({ [sortField]: sortOrder })
+    .skip(skip)
+    .limit(limitNum);
 
-  if (!messages) return res.status(404).json({ success: false });
+  if (messages.length == 0) return res.status(404).json({ data: {}, success: false });
 
   return res.status(200).json({
     success: true,

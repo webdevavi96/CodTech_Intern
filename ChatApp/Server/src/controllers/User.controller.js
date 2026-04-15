@@ -84,7 +84,6 @@ export const logOut = asyncHandler(async (req, res) => {
 });
 
 export const register = asyncHandler(async (req, res) => {
-  const data = req.body;
 
   const { username, name, email, password } = req.body;
 

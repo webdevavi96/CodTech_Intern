@@ -4,9 +4,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 export const authJwt = (req, res, next) => {
   try {
     const accessToken = req.cookies.accessToken;
-    if (!accessToken) {
-      return res.status(401).json({ message: 'No access token' });
-    }
     try {
       const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
       req.user = decoded;

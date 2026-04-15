@@ -1,6 +1,7 @@
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { Messages } from '../models/Messages.models.js';
 import { User } from '../models/User.models.js';
+import { client } from '../config/redis.conf.js';
 import mongoose from 'mongoose';
 
 // This methoe is unuesd for now.
@@ -38,7 +39,7 @@ export const getChat = asyncHandler(async (req, res) => {
   const pageNum = parseInt(page) || 1;
   const limitNum = parseInt(limit) || 10;
   const skip = (pageNum - 1) * limitNum;
-  const sortOrder = sortType === 'dsc' ? -1 : 1;
+  const sortOrder = -1;
   const allowedSortFields = ['createdAt', 'updatedAt', 'sentBy', 'sentTo'];
   const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
 
@@ -47,22 +48,49 @@ export const getChat = asyncHandler(async (req, res) => {
 
   const receiverObjectId = new mongoose.Types.ObjectId(receiverId);
   const senderObjectId = new mongoose.Types.ObjectId(req.user._id);
+  const users = [receiverId, req.user._id].sort();
+  const baseKey = `chat:${users[0]}:${users[1]}`;
+  const cacheKey = `chat:${users[0]}:${users[1]}:page:${pageNum}:limit:${limitNum}:sort:${sortType}`;
+  let messages = null;
+  let total = 0;
 
-  const messages = await Messages.find({
-    $or: [
-      { sentBy: senderObjectId, sentTo: receiverObjectId },
-      { sentBy: receiverObjectId, sentTo: senderObjectId },
-    ],
-  })
-    .sort({ [sortField]: sortOrder })
-    .skip(skip)
-    .limit(limitNum);
+  const cache = await client.get(cacheKey);
 
-  if (messages.length == 0) return res.status(404).json({ data: {}, success: false });
+  if (cache) {
+    console.log('here');
+    const parsed = JSON.parse(cache);
+    messages = parsed.messages;
+    total = parsed.total;
+  } else {
+    const query = {
+      $or: [
+        { sentBy: senderObjectId, sentTo: receiverObjectId },
+        { sentBy: receiverObjectId, sentTo: senderObjectId },
+      ],
+    };
+
+    messages = await Messages.find(query)
+      .sort({ [sortField]: sortOrder })
+      .skip(skip)
+      .limit(limitNum);
+
+    total = await Messages.countDocuments(query);
+
+    await client.set(cacheKey, JSON.stringify({ messages, total }));
+  }
+
+  if (messages.length === 0)
+    return res.status(200).json({ data: [], success: true, hasMore: false });
+
+  const keys = await client.keys(`${baseKey}:*`);
+  if (keys.length) {
+    await client.del(keys);
+  }
 
   return res.status(200).json({
     success: true,
     data: messages,
+    hasMore: skip + limitNum < total,
   });
 });
 

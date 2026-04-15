@@ -6,7 +6,6 @@ import Loader from '../components/Loader';
 export default function ProtectedRoutes({ children }) {
   const { isAuthenticated, loading } = useContext(AuthContext);
   const location = useLocation();
-
   if (loading) return <Loader />;
 
   if (!isAuthenticated) return <Navigate to="/login" replace state={{ from: location }} />;

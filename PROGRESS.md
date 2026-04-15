@@ -74,3 +74,13 @@ These are my next steps ->
 - Some users might not want to set profile avatar, so I'll implement default avatar for better UX.
 
 - Improve user *online/offline* status.
+
+### Day 14
+
+Today I implemented Online/Offline status marker, message time stamp, older message with pagination so users can fetcch seemlesly when they need. Solved miner bug in refresh token reset method.
+
+*Next Steps:*
+
+- Going to add default avatar
+
+-User CRUD operation on profile

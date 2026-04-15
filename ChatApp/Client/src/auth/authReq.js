@@ -1,5 +1,4 @@
 const url = import.meta.env.VITE_AUTH_URL;
-console.log(url)
 
 export const registerUser = async (formData) => {
   try {

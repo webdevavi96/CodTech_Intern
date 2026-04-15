@@ -11,7 +11,6 @@ export const ChatContextProvider = ({ children }) => {
 
   useEffect(() => {
     const getUsers = async () => {
-      console.log('mouned', didRun.current);
       try {
         const query = {
           page: 1,
@@ -27,7 +26,6 @@ export const ChatContextProvider = ({ children }) => {
           credentials: 'include',
         });
 
-        console.log(res);
         if (!res.ok) {
           setUsers(null);
           setLoading(false);
@@ -35,10 +33,7 @@ export const ChatContextProvider = ({ children }) => {
 
         const data = await res?.json();
 
-        console.log(data);
-
         const usersList = (await data?.data?.length) == 0 ? null : data?.data;
-        console.log(usersList);
         setUsers(usersList);
         setLoading(false);
       } catch (error) {
@@ -47,7 +42,6 @@ export const ChatContextProvider = ({ children }) => {
         setLoading(false);
       }
     };
-    console.log(isAuthenticated);
     if (!isAuthenticated) return;
     if (didRun.current) return;
     getUsers();

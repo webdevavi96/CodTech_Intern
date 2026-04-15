@@ -50,6 +50,11 @@ io.on('connection', (socket) => {
         userId,
         status: 'Online',
       });
+
+      socket.broadcast.emit('status', {
+        userId,
+        status: 'Online',
+      });
     }
   });
 
@@ -84,11 +89,20 @@ io.on('connection', (socket) => {
     if (activeSockets.size === 0) {
       activeUsers.delete(userId);
 
-      socket.broadcast.emit('status', {
-        userId,
-        status: 'Offline',
+      socket.on('check_status', (userId, callback) => {
+        const isOnline = activeUsers.has(userId);
+
+        callback({
+          userId,
+          status: isOnline ? 'Online' : 'Offline',
+        });
       });
     }
+
+    socket.broadcast.emit('status', {
+      userId,
+      status: 'Offline',
+    });
   });
 });
 

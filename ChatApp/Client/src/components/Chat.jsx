@@ -28,13 +28,6 @@ export default function Chat({ selected, children }) {
 
   const activeUser = selected || users?.find((u) => u._id.toString() === id);
 
-  const isNearTop = () => {
-    const el = containerRef.current;
-    if (!el) return false;
-
-    return el.scrollTop < 50;
-  };
-
   // Auto scroll when new message arrives
   useEffect(() => {
     if (!containerRef.current) return;
@@ -74,8 +67,6 @@ export default function Chat({ selected, children }) {
   useEffect(() => {
     socket.current = chat();
 
-    socket.current.emit('join', user._id);
-
     return () => {
       socket.current.disconnect();
     };
@@ -83,13 +74,20 @@ export default function Chat({ selected, children }) {
 
   // Checking user active status when page mounted
   useEffect(() => {
-    if (!socket.current || !activeUser?._id) return;
+    if (!socket.current) return;
 
-    socket.current.emit('check_status', activeUser._id, (res) => {
-      setIsActive(res.status === 'Online');
-    });
+    socket.current.emit('join', user._id);
+
+    const handler = (data) => {
+      if (data.userId === activeUser?._id) {
+        setIsActive(data.status === 'Online');
+      }
+    };
+
+    socket.current.on('status', handler);
+
+    return () => socket.current.off('status', handler);
   }, [activeUser]);
-
 
   // Sending messages through sockets
   useEffect(() => {
@@ -119,14 +117,16 @@ export default function Chat({ selected, children }) {
     };
   }, []);
 
+
   // Getting old messages when user first visits
   useEffect(() => {
     const getChat = async () => {
       if (!activeUser?._id) return;
       const res = await fetchChat(activeUser?._id);
-      setMessages(res?.data);
+      console.log(res)
+      setMessages(res?.data.reverse());
       setPage(2);
-      setHasMore(res?.data?.length === 10);
+      setHasMore(res?.hasMore);
     };
     getChat();
 
@@ -146,8 +146,8 @@ export default function Chat({ selected, children }) {
     if (!el) return;
 
     const prevHeight = el.scrollHeight;
-
     const res = await fetchChat(activeUser._id, page);
+    console.log(res)
 
     setMessages((prev) => [...(res?.data || []), ...prev]);
 
@@ -228,6 +228,7 @@ export default function Chat({ selected, children }) {
               messageProps={msg}
               currUser={msg.sentBy === user._id ? user : activeUser}
               messageStatus={msg.sentBy === user._id ? 'sent' : 'recieved'}
+              timeStamp={msg.sentOn}
             />
           </div>
         ))}

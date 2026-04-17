@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/User.models.js";
 import { sendOtp } from "../config/config.js";
 import { client } from "../config/redis.conf.js";
+import { uploadFile } from "../utils/uploader.js";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -181,4 +182,37 @@ export const getMe = asyncHandler(async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: "Internal server error", success: false });
   }
+});
+
+export const uploadAvatar = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const userAvatar = req.files?.avatar[0]?.path;
+
+  if (!userId) return res.status(400).json({ message: "User Id not found", success: true });
+
+  if (!avatar)
+    return res.status(400).json({ message: "User avatar is not uploaded", succes: true });
+
+  const cacheKey = `user:${userId}`;
+  let user = null;
+
+  user = await client.get(cacheKey);
+  if (user) user = JSON.parse(user);
+  else {
+    user = await User.findOne(userId).select("-passowrd");
+
+    if (!user) return res.status(404).json({ message: "User not found!", success: true });
+  }
+
+  // Uploading user avatar to multer
+  const avatarUrl = await uploadFile(userAvatar);
+
+  if (!avatarUrl) return res.status(501).json({ mesage: "Internal server error", success: true });
+
+  user.avatar = avatarUrl;
+  await user.save();
+
+  await client.set(cacheKey, JSON.stringify(user));
+
+  return res.status(201).json({ message: "Avatar updated!", success: true });
 });

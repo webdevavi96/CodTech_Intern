@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { IoEye, IoEyeOff } from 'react-icons/io5';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { AuthContext } from '../contexts/authContext';
-import { loginUser } from '../auth/authReq';
+import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../contexts/authContext";
+import { loginUser } from "../auth/authReq";
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -11,7 +11,9 @@ function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/home';
+  
+  const from = location.state?.from?.pathname || "/home";
+
   const onSubmit = async (data) => {
     if (!data) return;
 
@@ -20,7 +22,6 @@ function Login() {
     if (!res.success) {
       return;
     }
-    console.log(res);
 
     login(res?.data);
     navigate(from, { replace: true });
@@ -38,7 +39,7 @@ function Login() {
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">Email Address</label>
             <input
-              {...register('email')}
+              {...register("email")}
               type="email"
               placeholder="Enter your email"
               className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
@@ -48,8 +49,8 @@ function Login() {
           <div className="relative">
             <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
             <input
-              {...register('password')}
-              type={show ? 'text' : 'password'}
+              {...register("password")}
+              type={show ? "text" : "password"}
               placeholder="Enter your password"
               className="w-full rounded-md border border-gray-300 px-4 py-2 pr-10 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
             />
@@ -70,7 +71,7 @@ function Login() {
           </button>
 
           <p className="text-center text-sm text-gray-600">
-            Don’t have an account?{' '}
+            Don’t have an account?{" "}
             <NavLink
               to="/register"
               className="cursor-pointer font-medium text-[#3A04FF] hover:underline"

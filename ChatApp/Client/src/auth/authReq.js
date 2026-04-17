@@ -3,8 +3,8 @@ const url = import.meta.env.VITE_AUTH_URL;
 export const registerUser = async (formData) => {
   try {
     const res = await fetch(`${url}/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
@@ -21,8 +21,8 @@ export const registerUser = async (formData) => {
 export const verifyOtp = async (formData, username) => {
   try {
     const res = await fetch(`${url}/verify_otp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...formData, username }),
     });
 
@@ -39,9 +39,9 @@ export const verifyOtp = async (formData, username) => {
 export const loginUser = async (formData) => {
   try {
     const res = await fetch(`${url}/login`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
@@ -50,16 +50,16 @@ export const loginUser = async (formData) => {
 
     return data;
   } catch (error) {
-    console.log('somethin', error);
+    console.log("somethin", error);
     throw new Error(error);
   }
 };
 
 export const logout = async (user) => {
   const res = await fetch(`${url}/logout`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
   });
 

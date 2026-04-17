@@ -1,5 +1,5 @@
-import React from 'react';
-import AppLogo from '../assets/liveLogo.jpg';
+import React from "react";
+import AppLogo from "../assets/liveLogo.jpg";
 
 function Loader({ children }) {
   if (children)

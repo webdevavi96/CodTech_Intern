@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { AuthContext } from './authContext';
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { AuthContext } from "./authContext";
 
 export const ChatContext = createContext();
 
@@ -15,15 +15,15 @@ export const ChatContextProvider = ({ children }) => {
         const query = {
           page: 1,
           limit: 10,
-          sortBy: 'createdAt',
-          sortType: 'asc',
+          sortBy: "createdAt",
+          sortType: "asc",
         };
 
         const queryString = new URLSearchParams(query).toString();
 
         const res = await fetch(`${import.meta.env.VITE_USERS_URL}/users/?${queryString}`, {
-          method: 'GET',
-          credentials: 'include',
+          method: "GET",
+          credentials: "include",
         });
 
         if (!res.ok) {

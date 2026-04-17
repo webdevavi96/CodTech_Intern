@@ -1,6 +1,6 @@
-import React from 'react';
-import people from '../assets/people.svg';
-import security from '../assets/security.svg';
+import React from "react";
+import people from "../assets/people.svg";
+import security from "../assets/security.svg";
 
 function About() {
   return (

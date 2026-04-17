@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { UserCard, Chat } from '../components/components.js';
-import { useNavigate } from 'react-router-dom';
-import { ChatContext } from '../contexts/chatContext.jsx';
-import { Loader } from '../components/components.js';
+import React, { useState, useEffect, useContext } from "react";
+import { UserCard, Chat } from "../components/components.js";
+import { useNavigate } from "react-router-dom";
+import { ChatContext } from "../contexts/chatContext.jsx";
+import { Loader } from "../components/components.js";
 
 function Home() {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -22,9 +22,9 @@ function Home() {
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (

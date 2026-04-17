@@ -1,5 +1,5 @@
-import React from 'react';
-import { MdAddIcCall } from 'react-icons/md';
+import React from "react";
+import { MdAddIcCall } from "react-icons/md";
 
 function CallerCard({ user, onClick = () => {} }) {
   return (

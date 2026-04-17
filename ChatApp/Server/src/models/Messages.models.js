@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema(
   {
     sentBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
     sentTo: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
     content: {
       type: String,
@@ -22,4 +22,4 @@ const messageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Messages = mongoose.model('Messages', messageSchema);
+export const Messages = mongoose.model("Messages", messageSchema);

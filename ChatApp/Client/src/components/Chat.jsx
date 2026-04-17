@@ -1,20 +1,20 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { CiMenuKebab } from 'react-icons/ci';
-import { MdAddIcCall } from 'react-icons/md';
-import { FaArrowLeft } from 'react-icons/fa';
-import { getLastActive } from '../utils/getLastActive';
-import ChatBubble from './ChatBubble';
-import SendMessageBox from './SendMessageBox';
-import { chat } from '../services/callActions';
-import { ChatContext } from '../contexts/chatContext';
-import { AuthContext } from '../contexts/authContext';
-import { fetchChat } from '../services/chatService';
+import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { CiMenuKebab } from "react-icons/ci";
+import { MdAddIcCall } from "react-icons/md";
+import { FaArrowLeft } from "react-icons/fa";
+import { getLastActive } from "../utils/getLastActive";
+import ChatBubble from "./ChatBubble";
+import SendMessageBox from "./SendMessageBox";
+import { chat } from "../services/callActions";
+import { ChatContext } from "../contexts/chatContext";
+import { AuthContext } from "../contexts/authContext";
+import { fetchChat } from "../services/chatService";
 
 export default function Chat({ selected, children }) {
   const [isMobileUser, setIsMobileUser] = useState(false);
   const [showLoadMore, setShowLoadMore] = useState(false);
-  const [sendMessage, setSendMessage] = useState('');
+  const [sendMessage, setSendMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const [hasMore, setHasMore] = useState(true);
@@ -45,12 +45,11 @@ export default function Chat({ selected, children }) {
       setShowLoadMore(isNearTop);
     };
 
-    el.addEventListener('scroll', handleScroll);
-
+    el.addEventListener("scroll", handleScroll);
 
     handleScroll();
 
-    return () => el.removeEventListener('scroll', handleScroll);
+    return () => el.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Checking cleint's devices width for routing in small devices
@@ -76,25 +75,25 @@ export default function Chat({ selected, children }) {
   useEffect(() => {
     if (!socket.current) return;
 
-    socket.current.emit('join', user._id);
+    socket.current.emit("join", user._id);
 
     const handler = (data) => {
       if (data.userId === activeUser?._id) {
-        setIsActive(data.status === 'Online');
+        setIsActive(data.status === "Online");
       }
     };
 
-    socket.current.on('status', handler);
+    socket.current.on("status", handler);
 
-    return () => socket.current.off('status', handler);
+    return () => socket.current.off("status", handler);
   }, [activeUser]);
 
   // Sending messages through sockets
   useEffect(() => {
-    if (!socket.current || sendMessage === '') return;
+    if (!socket.current || sendMessage === "") return;
 
     socket.current.emit(
-      'send_message',
+      "send_message",
       {
         senderId: user._id,
         receiverId: activeUser._id,
@@ -108,30 +107,26 @@ export default function Chat({ selected, children }) {
   useEffect(() => {
     if (!socket.current) return;
 
-    socket.current.on('receive_message', (data) => {
+    socket.current.on("receive_message", (data) => {
       setMessages((pre) => [...pre, data]);
     });
 
     return () => {
-      socket.current.off('receive_message');
+      socket.current.off("receive_message");
     };
   }, []);
-
 
   // Getting old messages when user first visits
   useEffect(() => {
     const getChat = async () => {
       if (!activeUser?._id) return;
       const res = await fetchChat(activeUser?._id);
-      console.log(res)
       setMessages(res?.data.reverse());
       setPage(2);
       setHasMore(res?.hasMore);
     };
     getChat();
-
   }, [activeUser]);
-
 
   // Setting new messages to send via socket
   const messageHandler = (message) => {
@@ -147,7 +142,7 @@ export default function Chat({ selected, children }) {
 
     const prevHeight = el.scrollHeight;
     const res = await fetchChat(activeUser._id, page);
-    console.log(res)
+    console.log(res);
 
     setMessages((prev) => [...(res?.data || []), ...prev]);
 
@@ -162,7 +157,6 @@ export default function Chat({ selected, children }) {
       el.scrollTop = newHeight - prevHeight;
     }, 0);
   };
-
 
   // Initial check if there is user selected or not
   if (!activeUser) {
@@ -190,14 +184,14 @@ export default function Chat({ selected, children }) {
 
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold">{activeUser.username}</span>
-            <span className={`text-xs ${isActive ? 'text-green-700' : 'text-gray-700'}`}></span>
+            <span className={`text-xs ${isActive ? "text-green-700" : "text-gray-700"}`}></span>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-gray-600">
+        {/* <div className="flex items-center gap-4 text-gray-600">
           <MdAddIcCall size={20} className="cursor-pointer" />
           <CiMenuKebab size={20} className="cursor-pointer" />
-        </div>
+        </div> */}
       </div>
 
       <div className="py-2 text-center">
@@ -212,7 +206,7 @@ export default function Chat({ selected, children }) {
           <div className="text-center">
             <button
               onClick={loadMoreMessages}
-              className="bg-transparent text-blue-800 underline px-3 py-1 rounded"
+              className="rounded bg-transparent px-3 py-1 text-blue-800 underline"
             >
               Load more
             </button>
@@ -222,12 +216,12 @@ export default function Chat({ selected, children }) {
         {messages?.map((msg) => (
           <div
             key={msg._id}
-            className={`flex ${msg.sentBy === user._id ? 'justify-end' : 'min-h-0 justify-start'}`}
+            className={`flex ${msg.sentBy === user._id ? "justify-end" : "min-h-0 justify-start"}`}
           >
             <ChatBubble
               messageProps={msg}
               currUser={msg.sentBy === user._id ? user : activeUser}
-              messageStatus={msg.sentBy === user._id ? 'sent' : 'recieved'}
+              messageStatus={msg.sentBy === user._id ? "sent" : "recieved"}
               timeStamp={msg.sentOn}
             />
           </div>

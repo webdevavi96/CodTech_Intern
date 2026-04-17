@@ -1,5 +1,5 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React from "react";
+import { useForm } from "react-hook-form";
 
 function Contact() {
   const { register, handleSubmit } = useForm();
@@ -18,7 +18,7 @@ function Contact() {
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">Name</label>
             <input
-              {...register('name')}
+              {...register("name")}
               type="text"
               placeholder="Enter your name"
               className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
@@ -28,7 +28,7 @@ function Contact() {
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">Email</label>
             <input
-              {...register('email')}
+              {...register("email")}
               type="email"
               placeholder="Enter your email"
               className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
@@ -38,7 +38,7 @@ function Contact() {
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">Message</label>
             <textarea
-              {...register('message')}
+              {...register("message")}
               rows="4"
               placeholder="Write your message..."
               className="w-full resize-none rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"

@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 function Footer() {
   return (
@@ -31,7 +31,7 @@ function Footer() {
 
         <div className="text-sm md:text-right">
           <p className="mb-2">
-            Developed by{' '}
+            Developed by{" "}
             <a
               href="https://webdevavi96.netlify.app/"
               target="_blank"

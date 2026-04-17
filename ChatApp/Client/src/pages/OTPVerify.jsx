@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { useForm } from 'react-hook-form';
-import { verifyOtp } from '../auth/authReq';
-import { AuthContext } from '../contexts/authContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
+import { verifyOtp } from "../auth/authReq";
+import { AuthContext } from "../contexts/authContext";
+import { useNavigate } from "react-router-dom";
 
 function OTPVerify() {
   const {
@@ -17,11 +17,11 @@ function OTPVerify() {
 
   const onSubmit = async (data) => {
     if (!data) return;
-    if (!username) console.log('null value', username);
+    if (!username) console.log("null value", username);
     const res = await verifyOtp(data, username);
     if (res.status !== 201) return;
 
-    navigate('/login');
+    navigate("/login");
     reset();
   };
 
@@ -32,11 +32,11 @@ function OTPVerify() {
           <label className="mb-1 block text-sm font-medium text-gray-700">Verify OTP</label>
 
           <input
-            {...register('otpInput', {
-              required: 'OTP is required',
+            {...register("otpInput", {
+              required: "OTP is required",
               pattern: {
                 value: /^[0-9]{6}$/,
-                message: 'Enter a valid 6-digit OTP',
+                message: "Enter a valid 6-digit OTP",
               },
             })}
             type="text"

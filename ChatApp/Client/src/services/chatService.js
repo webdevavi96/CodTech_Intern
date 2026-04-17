@@ -7,14 +7,14 @@ export const fetchChat = async (userId, page = 1) => {
     const query = {
       page: page,
       limit: 20,
-      sortBy: 'createdAt',
-      sortType: 'dsc',
+      sortBy: "createdAt",
+      sortType: "dsc",
     };
 
     const queryString = new URLSearchParams(query).toString();
 
     const res = await fetch(`${chatUrl}/${userId}/?${queryString}`, {
-      credentials: 'include',
+      credentials: "include",
     });
 
     if (!res.ok) {
@@ -24,6 +24,6 @@ export const fetchChat = async (userId, page = 1) => {
     const data = await res.json();
     return data;
   } catch (error) {
-    console.error('fetching chats error: ', error);
+    console.error("fetching chats error: ", error);
   }
 };

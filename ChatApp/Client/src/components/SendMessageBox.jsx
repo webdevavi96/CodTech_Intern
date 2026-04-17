@@ -1,26 +1,25 @@
-import React from 'react';
+import React from "react";
 
 function SendMessageBox({ handler }) {
-  const [message, setMessage] = React.useState('');
+  const [message, setMessage] = React.useState("");
 
   const handleSubmit = () => {
     if (!message) return;
     handler(message);
-    setMessage('');
+    setMessage("");
   };
-
 
   React.useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         handleSubmit();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
@@ -34,8 +33,12 @@ function SendMessageBox({ handler }) {
         className="flex-1 rounded-full border px-4 py-2 text-sm outline-none"
       />
 
-      <input type='submit' onClick={handleSubmit} className="px-2 font-medium text-blue-600" value="Send" />
-
+      <input
+        type="submit"
+        onClick={handleSubmit}
+        className="px-2 font-medium text-blue-600"
+        value="Send"
+      />
     </div>
   );
 }

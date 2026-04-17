@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { MdOutlineChatBubble, MdCallEnd } from 'react-icons/md';
-import { BsFillMicMuteFill } from 'react-icons/bs';
-import { IoMdPersonAdd } from 'react-icons/io';
-import { CiMenuKebab } from 'react-icons/ci';
-import { FaArrowLeft } from 'react-icons/fa';
-import { endCall, muteCall, addNewPeople, chat } from '../services/callActions';
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { MdOutlineChatBubble, MdCallEnd } from "react-icons/md";
+import { BsFillMicMuteFill } from "react-icons/bs";
+import { IoMdPersonAdd } from "react-icons/io";
+import { CiMenuKebab } from "react-icons/ci";
+import { FaArrowLeft } from "react-icons/fa";
+import { endCall, muteCall, addNewPeople, chat } from "../services/callActions";
+import { ChatContext } from "../contexts/chatContext";
 
 function CallPage({ user, children }) {
   const { id } = useParams();
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
+  const {users} = useContext(ChatContext);
+  
+  const activeUser = user || users.find((u) => u.id.toString() === id);
 
   useEffect(() => {
     if (window.innerWidth < 1024) setIsMobileUser(true);
     else setIsMobileUser(false);
   });
 
-  const activeUser = user || users.find((u) => u.id.toString() === id);
 
   const handleClick = () => {
     navigate(window.history.back());

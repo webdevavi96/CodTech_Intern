@@ -1,7 +1,7 @@
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
 export const endCall = () => {
-  alert('Call Ended!');
+  alert("Call Ended!");
 };
 
 export const muteCall = () => {
@@ -15,3 +15,8 @@ export const addNewPeople = () => {
 export function chat() {
   return io(import.meta.env.VITE_CHAT_URL);
 }
+
+
+
+// Helper functions for call related services;
+

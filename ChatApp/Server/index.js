@@ -1,16 +1,15 @@
-import { server, port } from './app.js';
-import { connect } from './src/config/conn.db.js';
+import { server, port } from "./app.js";
+import { connect } from "./src/config/conn.db.js";
 
 // DB Connection Main server running
 connect()
   .then(() => {
-    server.on('error', (error) => {
+    server.on("error", (error) => {
       console.error(error);
       throw error;
     });
-    server.listen(port, '0.0.0.0', () => {
-      console.log('Server is running on port: ', port);
+    server.listen(port, "0.0.0.0", () => {
+      console.log("Server is running on port: ", port);
     });
-    
   })
-  .catch((error) => console.error('mongoDB connection error: ', error));
+  .catch((error) => console.error("mongoDB connection error: ", error));

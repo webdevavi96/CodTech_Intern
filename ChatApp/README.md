@@ -8,11 +8,15 @@ and Database diagram relation model - [View DB Realtional Design](https://drive.
 
 For System Design - [View Working System Design](https://drive.google.com/file/d/1AZcDR9nulnf6LWtJO_zeCiHo63tyeUfb/view?usp=drive_link)
 
+## Folder Structures
+
+Server - [View](url)
+Client - [View](url)
+
 ## Features
 
 This app have basic features -
 
 1. Live One to One chat
-2. Live One to One call
-3. Profile management eg - Delete, Update
-4. Email OTP verification using Google SMTP
+2. Profile management eg - CRUD Operations
+3. Email OTP verification using Google SMTP

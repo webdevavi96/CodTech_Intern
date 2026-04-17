@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
-import { AuthContext } from '../contexts/authContext';
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { AuthContext } from "../contexts/authContext";
 
 function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
 
   const linkClass = ({ isActive }) =>
     `relative px-2 py-1 font-medium transition ${
-      isActive ? 'text-[#00A884]' : 'text-gray-400 hover:text-white'
+      isActive ? "text-[#00A884]" : "text-gray-400 hover:text-white"
     }`;
 
   return (
@@ -39,7 +39,7 @@ function Navbar() {
                   </span>
                 )}
               </NavLink>
-              <NavLink to="/calls" className={linkClass}>
+              {/* <NavLink to="/calls" className={linkClass}>
                 {({ isActive }) => (
                   <span className="relative">
                     Calls
@@ -48,7 +48,7 @@ function Navbar() {
                     )}
                   </span>
                 )}
-              </NavLink>
+              </NavLink> */}
               <NavLink to="/settings" className={linkClass}>
                 {({ isActive }) => (
                   <span className="relative">

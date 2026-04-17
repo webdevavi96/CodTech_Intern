@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import CallerCard from '../components/CallerCard';
-import CallPage from '../components/CallPage';
-import { useNavigate } from 'react-router-dom';
-import { ChatContext } from '../contexts/chatContext';
-import Loader from '../components/Loader';
+import React, { useState, useEffect, useContext } from "react";
+import CallerCard from "../components/CallerCard";
+import CallPage from "../components/CallPage";
+import { useNavigate } from "react-router-dom";
+import { ChatContext } from "../contexts/chatContext";
+import Loader from "../components/Loader";
 
 function Calls() {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -17,9 +17,9 @@ function Calls() {
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleClick = (user) => {

@@ -1,6 +1,6 @@
-import React, { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Navbar, Footer, Loader } from './components.js';
+import React, { Suspense } from "react";
+import { Outlet } from "react-router-dom";
+import { Navbar, Footer, Loader } from "./components.js";
 
 function Layout() {
   return (

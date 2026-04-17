@@ -1,8 +1,8 @@
-import { asyncHandler } from '../utils/asyncHandler.js';
-import { Messages } from '../models/Messages.models.js';
-import { User } from '../models/User.models.js';
-import { client } from '../config/redis.conf.js';
-import mongoose from 'mongoose';
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { Messages } from "../models/Messages.models.js";
+import { User } from "../models/User.models.js";
+import { client } from "../config/redis.conf.js";
+import mongoose from "mongoose";
 
 // This methoe is unuesd for now.
 export const sendMessage = asyncHandler(async (req, res) => {
@@ -18,11 +18,11 @@ export const sendMessage = asyncHandler(async (req, res) => {
     const receiverRoom = reciverId.toString();
     const senderRoom = req.user._id.toString();
 
-    io.to(receiverRoom).emit('new_message', message);
-    io.to(senderRoom).emit('new_message', message);
+    io.to(receiverRoom).emit("new_message", message);
+    io.to(senderRoom).emit("new_message", message);
 
     return res.status(200).json({
-      message: 'sent',
+      message: "sent",
       success: true,
       data: message,
     });
@@ -40,11 +40,11 @@ export const getChat = asyncHandler(async (req, res) => {
   const limitNum = parseInt(limit) || 10;
   const skip = (pageNum - 1) * limitNum;
   const sortOrder = -1;
-  const allowedSortFields = ['createdAt', 'updatedAt', 'sentBy', 'sentTo'];
-  const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+  const allowedSortFields = ["createdAt", "updatedAt", "sentBy", "sentTo"];
+  const sortField = allowedSortFields.includes(sortBy) ? sortBy : "createdAt";
 
   if (!mongoose.Types.ObjectId.isValid(receiverId))
-    return res.status(400).json({ message: 'reciever id is required!' });
+    return res.status(400).json({ message: "reciever id is required!" });
 
   const receiverObjectId = new mongoose.Types.ObjectId(receiverId);
   const senderObjectId = new mongoose.Types.ObjectId(req.user._id);
@@ -57,7 +57,7 @@ export const getChat = asyncHandler(async (req, res) => {
   const cache = await client.get(cacheKey);
 
   if (cache) {
-    console.log('here');
+    console.log("here");
     const parsed = JSON.parse(cache);
     messages = parsed.messages;
     total = parsed.total;
@@ -100,10 +100,10 @@ export const getUsers = asyncHandler(async (req, res) => {
   const limitNum = parseInt(limit) || 10;
   const skip = (pageNum - 1) * limitNum;
 
-  const allowedSortFields = ['createdAt', 'username', 'fullname'];
-  const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+  const allowedSortFields = ["createdAt", "username", "fullname"];
+  const sortField = allowedSortFields.includes(sortBy) ? sortBy : "createdAt";
 
-  const sortOrder = sortType === 'asc' ? 1 : -1;
+  const sortOrder = sortType === "asc" ? 1 : -1;
 
   const userId = new mongoose.Types.ObjectId(req.user._id);
 

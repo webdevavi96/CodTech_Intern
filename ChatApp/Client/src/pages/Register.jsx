@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useForm } from 'react-hook-form';
-import { IoEye, IoEyeOff } from 'react-icons/io5';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { registerUser } from '../auth/authReq';
-import { AuthContext } from '../contexts/authContext';
+import React, { useEffect, useState, useContext } from "react";
+import { useForm } from "react-hook-form";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import { NavLink, useNavigate } from "react-router-dom";
+import { registerUser } from "../auth/authReq";
+import { AuthContext } from "../contexts/authContext";
 
 function Register() {
   const navigate = useNavigate();
   const { userContext } = useContext(AuthContext);
-
   const { register, handleSubmit } = useForm();
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState(null);
@@ -16,11 +15,10 @@ function Register() {
   const [wrongPass, setWrongPass] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log(data);
 
     if (!data) return;
 
-    Reflect.deleteProperty(data, 'confirmPassword');
+    Reflect.deleteProperty(data, "confirmPassword");
 
     const res = await registerUser(data);
     alert(data);
@@ -31,13 +29,13 @@ function Register() {
 
     if (!res.success) return;
 
-    navigate('/verify_otp');
+    navigate("/verify_otp");
   };
 
   const handlePassword = () => {
     if (password !== confPassword) {
       setWrongPass(true);
-      console.log('wrong pass');
+      console.log("wrong pass");
     }
     setWrongPass(false);
   };
@@ -59,7 +57,7 @@ function Register() {
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">Username</label>
               <input
-                {...register('username')}
+                {...register("username")}
                 type="text"
                 className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
               />
@@ -68,7 +66,7 @@ function Register() {
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">Full Name</label>
               <input
-                {...register('name')}
+                {...register("name")}
                 type="text"
                 className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
               />
@@ -78,7 +76,7 @@ function Register() {
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">Email Address</label>
             <input
-              {...register('email')}
+              {...register("email")}
               type="email"
               className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
             />
@@ -91,9 +89,9 @@ function Register() {
             <div className="relative">
               <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
               <input
-                {...register('password')}
+                {...register("password")}
                 onChange={(e) => setPassword(e.value)}
-                type={show ? 'text' : 'password'}
+                type={show ? "text" : "password"}
                 className="w-full rounded-md border border-gray-300 px-4 py-2 pr-10 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
               />
               <button
@@ -110,9 +108,9 @@ function Register() {
                 Confirm Password
               </label>
               <input
-                {...register('confirmPassword')}
+                {...register("confirmPassword")}
                 onChange={(e) => setConfPassword(e.value)}
-                type={show ? 'text' : 'password'}
+                type={show ? "text" : "password"}
                 className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
               />
             </div>
@@ -120,7 +118,7 @@ function Register() {
 
           <div className="flex flex-col-reverse items-center justify-between gap-4 pt-4">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
+              Already have an account?{" "}
               <NavLink
                 to="/login"
                 className="cursor-pointer font-medium text-[#3A04FF] hover:underline"

@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
 function Profile({ user }) {
   if (!user) {
     return <div className="text-gray-400">No user data available</div>;
   }
 
-  const { username, name, email, avatar, bio } = user;
+  const { username, fullname, email, avatar, bio } = user;
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl">
@@ -14,7 +14,7 @@ function Profile({ user }) {
           <img src={avatar} alt="profile" className="h-full w-full object-cover" />
         </div>
 
-        <h2 className="mt-3 text-lg font-semibold text-white">{name}</h2>
+        <h2 className="mt-3 text-lg font-semibold text-white">{fullname}</h2>
 
         <p className="text-sm text-gray-400">@{username}</p>
       </div>
@@ -27,7 +27,7 @@ function Profile({ user }) {
 
         <div className="p-4 transition hover:bg-[#202c33]">
           <p className="mb-1 text-xs text-gray-400">Bio</p>
-          <p className="text-gray-200">{bio || 'No bio added'}</p>
+          <p className="text-gray-200">{bio || "No bio added"}</p>
         </div>
       </div>
     </div>

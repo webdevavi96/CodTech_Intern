@@ -10,8 +10,9 @@ For System Design - [View Working System Design](https://drive.google.com/file/d
 
 ## Folder Structures
 
-Server - [View](url)
-Client - [View](url)
+Server - [View](https://github.com/webdevavi96/CodTech_Intern/blob/main/ChatApp/Server/SERVER_FILE_STRUCTURE.md)
+
+Client - [View](https://github.com/webdevavi96/CodTech_Intern/blob/main/ChatApp/Client/Folder_Structure.md)
 
 ## Features
 

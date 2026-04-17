@@ -54,6 +54,11 @@ export const AuthContextProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  const refreshUser = (newUser) => {
+    if (!newUser) return;
+    setUser(newUser);
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -63,6 +68,7 @@ export const AuthContextProvider = ({ children }) => {
         login,
         logOut,
         loading,
+        refreshUser,
         userContext,
       }}
     >

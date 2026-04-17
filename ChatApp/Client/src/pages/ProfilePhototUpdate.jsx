@@ -2,13 +2,16 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { AuthContext } from "../contexts/authContext.jsx";
+import { updateAvatar } from "../services/profileService.js";
 
 function ProfilePhotoUpdate() {
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const { user, refreshUser } = useContext(AuthContext);
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(user?.profilePic || "");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -20,15 +23,16 @@ function ProfilePhotoUpdate() {
 
     const handleUpload = async () => {
         if (!selectedFile) return;
-
-        const formData = new FormData();
-        formData.append("profilePic", selectedFile);
-
         try {
-            console.log("Uploading...", selectedFile);
+
+            setIsSubmitting(true);
+            const res = await updateAvatar(selectedFile);
+            refreshUser(res);
             navigate(-1);
         } catch (err) {
             console.error(err);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -95,16 +99,17 @@ function ProfilePhotoUpdate() {
                 <div className="flex justify-between border-t bg-gray-50 px-6 py-4">
                     <button
                         onClick={handleUpload}
-                        disabled={!selectedFile}
-                        className={`px-5 py-2 rounded text-white ${selectedFile
+                        disabled={isSubmitting}
+                        className={`px-5 py-2 rounded text-white ${!isSubmitting
                             ? "bg-[#009DFF] hover:bg-blue-600"
                             : "bg-gray-400 cursor-not-allowed"
                             }`}
                     >
-                        Upload
+                        {isSubmitting ? "Uplaoding" : "Upload"}
                     </button>
 
                     <button
+                        disabled={isSubmitting}
                         onClick={() => navigate(-1)}
                         className="rounded border px-4 py-2 text-gray-600 hover:bg-gray-100"
                     >

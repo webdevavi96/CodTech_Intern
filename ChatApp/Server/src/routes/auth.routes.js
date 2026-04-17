@@ -6,6 +6,7 @@ import {
   verifyOtpAndRegister,
   getMe,
   uploadAvatar,
+  updateDetails,
 } from "../controllers/User.controller.js";
 import { authJwt } from "../middlewares/auth.midleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -19,6 +20,7 @@ router.route("/logout").post(logOut);
 router.route("/me").get(authJwt, getMe);
 router
   .route("/uploadAvatar")
-  .post(authJwt, upload.fields({ name: "avatar", maxCount: 2 }), uploadAvatar);
+  .post(authJwt, upload.single("avatar"), uploadAvatar);
+router.route("/update-profile").post(authJwt, updateDetails);
 
 export default router;

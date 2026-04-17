@@ -2,16 +2,18 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { AuthContext } from "../contexts/authContext.jsx";
+import { updateProfile } from "../services/profileService.js";
 
 function ProfileUpdate() {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, refreshUser } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
-    name: user?.name || "",
-    phone: user?.phone || "",
+    fullname: user?.fullname || "",
     bio: user?.bio || "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -20,9 +22,19 @@ function ProfileUpdate() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Updated:", formData);
+
+    try {
+      const res = await updateProfile(formData);
+      setIsSubmitting(true);
+      refreshUser(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+
   };
 
   return (
@@ -58,14 +70,15 @@ function ProfileUpdate() {
           <div className="flex flex-col">
             <label className="mb-1 text-sm text-gray-600">Full Name</label>
             <input
-              name="name"
-              value={formData.name}
+              name="fullname"
+              disabled={isSubmitting}
+              value={formData.fullname}
               onChange={handleChange}
               className="rounded border px-3 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
 
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label className="mb-1 text-sm text-gray-600">Phone</label>
             <input
               name="phone"
@@ -73,11 +86,12 @@ function ProfileUpdate() {
               onChange={handleChange}
               className="rounded border px-3 py-2 focus:outline-none focus:border-blue-500"
             />
-          </div>
+          </div> */}
 
           <div className="md:col-span-2 flex flex-col">
             <label className="mb-1 text-sm text-gray-600">Bio</label>
             <textarea
+              disabled={isSubmitting}
               name="bio"
               rows="3"
               value={formData.bio}
@@ -91,13 +105,15 @@ function ProfileUpdate() {
         <div className="flex justify-between border-t bg-gray-50 px-6 py-4">
           <button
             type="submit"
+            disabled={isSubmitting}
             className="rounded bg-[#009DFF] px-5 py-2 text-white hover:bg-blue-600"
           >
-            Save Changes
+            {isSubmitting ? "Submitting" : "Save Changes"}
           </button>
 
           <button
             type="button"
+            disabled={isSubmitting}
             onClick={() => navigate(-1)}
             className="rounded border px-4 py-2 text-gray-600 hover:bg-gray-100"
           >

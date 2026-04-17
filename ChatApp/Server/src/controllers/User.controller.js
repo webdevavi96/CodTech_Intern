@@ -186,33 +186,46 @@ export const getMe = asyncHandler(async (req, res) => {
 
 export const uploadAvatar = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const userAvatar = req.files?.avatar[0]?.path;
+  const userAvatar = req.file.path;
 
-  if (!userId) return res.status(400).json({ message: "User Id not found", success: true });
+  if (!userId) return res.status(400).json({ message: "User Id not found", success: false });
 
-  if (!avatar)
-    return res.status(400).json({ message: "User avatar is not uploaded", succes: true });
-
-  const cacheKey = `user:${userId}`;
-  let user = null;
-
-  user = await client.get(cacheKey);
-  if (user) user = JSON.parse(user);
-  else {
-    user = await User.findOne(userId).select("-passowrd");
-
-    if (!user) return res.status(404).json({ message: "User not found!", success: true });
-  }
+  if (!userAvatar)
+    return res.status(400).json({ message: "User avatar is not uploaded", succes: false });
 
   // Uploading user avatar to multer
   const avatarUrl = await uploadFile(userAvatar);
 
-  if (!avatarUrl) return res.status(501).json({ mesage: "Internal server error", success: true });
+  if (!avatarUrl) {
+    return res.status(501).json({ message: "Internal server error", success: false });
+  }
 
-  user.avatar = avatarUrl;
-  await user.save();
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { avatar: avatarUrl?.secure_url },
+    { new: true }
+  );
 
-  await client.set(cacheKey, JSON.stringify(user));
+  if (!user) return res.status(501).json({ message: "Internal server error", success: false });
 
-  return res.status(201).json({ message: "Avatar updated!", success: true });
+  return res.status(201).json({ message: "Avatar updated!", data: user, success: true });
+});
+
+export const updateDetails = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { fullname, bio } = req.body;
+
+  if (!fullname || !bio)
+    return res.status(400).json({ message: "All fields are required!", success: true });
+
+  const user = await User.findOneAndUpdate(
+    { _id: userId },
+    { fullname, bio },
+    { new: true, runValidators: true }
+  );
+  if (!user) return res.status(501).json({ message: "Internal server error", success: false });
+
+  return res
+    .status(201)
+    .json({ message: "Profile updated successfully!", data: user, success: true });
 });

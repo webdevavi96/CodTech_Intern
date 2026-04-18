@@ -1,7 +1,6 @@
 # Server File Structure
 
 ```
-
 └── 📁Server
     └── 📁public
         └── 📁temp
@@ -40,5 +39,4 @@
     ├── index.js
     ├── package-lock.json
     └── package.json
-    
 ```

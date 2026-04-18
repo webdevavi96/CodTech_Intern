@@ -12,4 +12,21 @@ This project is open source and anyone can use it but you have to get an API key
 
 You can walk through these steps for set-up of this project -
 
-- Steps will added here soon.
+### Server
+
+- ```cd Server```
+- ```npm install```
+- Create a ```.env``` file and extract all the veriables from ```.env-sample```
+- Use all veriables and assigne the nessary values
+- To generate refresh token secrets and auth secrets using this code:
+```node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"```
+- Run twice and get both secrets.
+- run ```npm run server``` to run server
+
+### Client
+
+- ```cd Client```
+- ```npm install```
+- Create a ```.env``` file and extract all the veriables from ```.env-sample```
+- Use all veriables and assigne the nessary values
+- ```npm run dev```

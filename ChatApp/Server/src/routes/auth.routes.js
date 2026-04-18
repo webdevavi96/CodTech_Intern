@@ -18,9 +18,7 @@ router.route("/verify_otp").post(verifyOtpAndRegister);
 router.route("/login").post(login);
 router.route("/logout").post(logOut);
 router.route("/me").get(authJwt, getMe);
-router
-  .route("/uploadAvatar")
-  .post(authJwt, upload.single("avatar"), uploadAvatar);
+router.route("/uploadAvatar").post(authJwt, upload.single("avatar"), uploadAvatar);
 router.route("/update-profile").post(authJwt, updateDetails);
 
 export default router;

@@ -35,7 +35,6 @@ app.use("/api/chat", chatRouter);
 
 const activeUsers = new Map();
 
-
 io.on("connection", (socket) => {
   socket.on("join", (userId) => {
     socket.userId = userId;
@@ -106,6 +105,5 @@ io.on("connection", (socket) => {
     });
   });
 });
-
 
 export { app, server, port };

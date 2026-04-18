@@ -9,7 +9,7 @@ This application focuses on reducing onboarding friction while maintaining a cle
 ## Core Features
 
 - Real-time messaging
-- Bi-directional communication powered by ```Socket.io``` for low-latency message delivery.
+- Bi-directional communication powered by `Socket.io` for low-latency message delivery.
 - Token-based authentication
 - Secure session handling using access and refresh tokens.
 - Email OTP verification
@@ -25,11 +25,10 @@ This application focuses on reducing onboarding friction while maintaining a cle
 
 Managing authentication state across the application without relying on insecure client-side storage was a key challenge.
 
-- Avoided ```localStorage``` due to its exposure via browser dev tools.
-- Implemented React Context API with ```useContext``` for global state management.
+- Avoided `localStorage` due to its exposure via browser dev tools.
+- Implemented React Context API with `useContext` for global state management.
 
 - #### Maintained user session in memory, ensuring -
-
   - Automatic cleanup on tab close
   - Reduced attack surface (no persistent storage)
 
@@ -53,13 +52,13 @@ Handling real-time updates introduced two main concerns:
 
 - Switching between conversations requires re-establishing socket connections.
 
-- Traditional state ```(useState)``` was unreliable for maintaining persistent socket references across renders.
+- Traditional state `(useState)` was unreliable for maintaining persistent socket references across renders.
 
 #### Solution
 
--Used ```useRef``` to store and manage the socket instance.
+-Used `useRef` to store and manage the socket instance.
 
-*Benefits:*
+_Benefits:_
 
 - Persistent reference across renders
 - No unnecessary re-renders

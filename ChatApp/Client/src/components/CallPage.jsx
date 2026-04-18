@@ -12,15 +12,14 @@ function CallPage({ user, children }) {
   const { id } = useParams();
   const [isMobileUser, setIsMobileUser] = useState(false);
   const navigate = useNavigate();
-  const {users} = useContext(ChatContext);
-  
+  const { users } = useContext(ChatContext);
+
   const activeUser = user || users.find((u) => u.id.toString() === id);
 
   useEffect(() => {
     if (window.innerWidth < 1024) setIsMobileUser(true);
     else setIsMobileUser(false);
   });
-
 
   const handleClick = () => {
     navigate(window.history.back());

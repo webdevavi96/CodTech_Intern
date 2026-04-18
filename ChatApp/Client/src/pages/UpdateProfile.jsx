@@ -14,7 +14,6 @@ function ProfileUpdate() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -34,23 +33,16 @@ function ProfileUpdate() {
     } finally {
       setIsSubmitting(false);
     }
-
   };
 
   return (
     <div className="min-h-screen bg-[#e1ecf7] p-4 md:p-6">
-
       {/* Header */}
       <div className="mb-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate(-1)}
-          className="rounded-full p-2 hover:bg-gray-200"
-        >
+        <button onClick={() => navigate(-1)} className="rounded-full p-2 hover:bg-gray-200">
           <FaArrowLeft />
         </button>
-        <h1 className="text-lg font-semibold text-gray-800">
-          Edit Profile
-        </h1>
+        <h1 className="text-lg font-semibold text-gray-800">Edit Profile</h1>
       </div>
 
       {/* Form Container */}
@@ -58,7 +50,6 @@ function ProfileUpdate() {
         onSubmit={handleSubmit}
         className="mx-auto max-w-3xl rounded-xl border bg-white shadow-sm"
       >
-
         {/* Section Header */}
         <div className="border-b bg-gray-100 px-6 py-4 font-semibold text-gray-700">
           Personal Information
@@ -66,7 +57,6 @@ function ProfileUpdate() {
 
         {/* Fields */}
         <div className="grid gap-4 p-6 md:grid-cols-2">
-
           <div className="flex flex-col">
             <label className="mb-1 text-sm text-gray-600">Full Name</label>
             <input
@@ -74,7 +64,7 @@ function ProfileUpdate() {
               disabled={isSubmitting}
               value={formData.fullname}
               onChange={handleChange}
-              className="rounded border px-3 py-2 focus:outline-none focus:border-blue-500"
+              className="rounded border px-3 py-2 focus:border-blue-500 focus:outline-none"
             />
           </div>
 
@@ -88,7 +78,7 @@ function ProfileUpdate() {
             />
           </div> */}
 
-          <div className="md:col-span-2 flex flex-col">
+          <div className="flex flex-col md:col-span-2">
             <label className="mb-1 text-sm text-gray-600">Bio</label>
             <textarea
               disabled={isSubmitting}
@@ -96,7 +86,7 @@ function ProfileUpdate() {
               rows="3"
               value={formData.bio}
               onChange={handleChange}
-              className="rounded border px-3 py-2 focus:outline-none focus:border-blue-500"
+              className="rounded border px-3 py-2 focus:border-blue-500 focus:outline-none"
             />
           </div>
         </div>

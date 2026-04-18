@@ -16,7 +16,4 @@ export function chat() {
   return io(import.meta.env.VITE_CHAT_URL);
 }
 
-
-
 // Helper functions for call related services;
-

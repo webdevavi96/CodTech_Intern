@@ -57,7 +57,7 @@ export const AuthContextProvider = ({ children }) => {
   const refreshUser = (newUser) => {
     if (!newUser) return;
     setUser(newUser);
-  }
+  };
 
   return (
     <AuthContext.Provider

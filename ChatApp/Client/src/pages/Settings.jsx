@@ -33,31 +33,21 @@ function Settings() {
 
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#e1ecf7] p-4 md:p-6">
-
       {/* Header */}
       {isMobileUser ? (
         <div className="sticky top-0 z-10 flex items-center gap-3 bg-[#e1ecf7] py-2">
-          <button
-            onClick={handleClick}
-            className="rounded-full p-2 hover:bg-gray-200"
-          >
+          <button onClick={handleClick} className="rounded-full p-2 hover:bg-gray-200">
             <FaArrowLeft />
           </button>
-          <span className="text-lg font-semibold text-gray-800">
-            Settings
-          </span>
+          <span className="text-lg font-semibold text-gray-800">Settings</span>
         </div>
       ) : (
-        <h1 className="mb-4 text-xl font-semibold text-gray-800">
-          Account Settings
-        </h1>
+        <h1 className="mb-4 text-xl font-semibold text-gray-800">Account Settings</h1>
       )}
 
       <div className="grid gap-6 md:grid-cols-2">
-
         {/* LEFT PANEL */}
         <div className="order-2 space-y-6 md:order-1">
-
           {/* PROFILE SETTINGS */}
           <div className="rounded-xl border bg-white shadow-sm">
             <div className="border-b bg-gray-100 px-5 py-3 font-semibold text-gray-700">
@@ -65,7 +55,6 @@ function Settings() {
             </div>
 
             <div className="divide-y">
-
               <div className="flex items-center justify-between px-5 py-4">
                 <div>
                   <p className="font-medium text-gray-800">Edit Profile</p>
@@ -85,9 +74,7 @@ function Settings() {
               <div className="flex items-center justify-between px-5 py-4">
                 <div>
                   <p className="font-medium text-gray-800">Profile Photo</p>
-                  <p className="text-sm text-gray-500">
-                    Change your display picture
-                  </p>
+                  <p className="text-sm text-gray-500">Change your display picture</p>
                 </div>
 
                 <button
@@ -107,13 +94,10 @@ function Settings() {
             </div>
 
             <div className="divide-y">
-
               <div className="flex items-center justify-between px-5 py-4">
                 <div>
                   <p className="font-medium text-gray-800">Log Out</p>
-                  <p className="text-sm text-gray-500">
-                    End your current session securely
-                  </p>
+                  <p className="text-sm text-gray-500">End your current session securely</p>
                 </div>
 
                 <button
@@ -135,9 +119,7 @@ function Settings() {
             <div className="flex items-center justify-between px-5 py-4">
               <div>
                 <p className="font-medium text-gray-800">Delete Account</p>
-                <p className="text-sm text-gray-500">
-                  Permanently remove your account and data
-                </p>
+                <p className="text-sm text-gray-500">Permanently remove your account and data</p>
               </div>
 
               <button className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700">

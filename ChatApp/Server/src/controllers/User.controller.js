@@ -85,10 +85,16 @@ export const logOut = asyncHandler(async (req, res) => {
 });
 
 export const register = asyncHandler(async (req, res) => {
-  const { username, name, email, password } = req.body;
+  const { username, name, email, password, gender } = req.body;
+  const defaultAvatar = {
+    male: "https://res.cloudinary.com/meplay/image/upload/v1776494190/male_avatar_qu98y7.jpg",
+    feamle: "https://res.cloudinary.com/meplay/image/upload/v1776494190/female_avatar_dzphdm.jpg",
+  };
+  const normalizedGender = gender?.toLowerCase();
+  const avatar = defaultAvatar[normalizedGender] || defaultAvatar["male"];
 
-  if (!username || !name || !email || !password)
-    return res.status(404).json({
+  if (!username || !name || !email || !password || gender)
+    return res.status(400).json({
       message: "All; fields are reqired!",
       data: {},
       success: false,
@@ -106,6 +112,8 @@ export const register = asyncHandler(async (req, res) => {
     username: username,
     fullname: name,
     email: email,
+    gender: gender,
+    avatar: avatar,
     password: password,
   };
 
@@ -125,7 +133,6 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
   const { otpInput, username } = req.body;
 
   if (!username || !otpInput) {
-    console.log(username, otpInput);
     return res.status(401).json({ message: "Invalid input" });
   }
 
@@ -138,8 +145,6 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
     });
 
   const { user, otp } = await JSON.parse(cachedUser);
-  console.log(user, otp);
-
   if (otp != parseInt(otpInput))
     return res.status(400).json({
       message: "Invalid OTP",
@@ -147,7 +152,6 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
     });
 
   await client.del(username);
-
   const createdUser = await User.create(user);
 
   if (!createdUser)

@@ -7,7 +7,7 @@ connect()
     server.on("error", (error) => {
       console.error(error);
       throw error;
-    });
+    }); 
     server.listen(port, "0.0.0.0", () => {
       console.log("Server is running on port: ", port);
     });

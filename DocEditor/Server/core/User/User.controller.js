@@ -1,4 +1,5 @@
 import User from "./User.model.js";
+import mongoose from "mongoose";
 
 function reqHandler(reqBody = {}, allowedFields = []) {
   const body = {};
@@ -36,13 +37,11 @@ export const register = async (req, res) => {
   const user = await User.create(body);
 
   if (!user)
-    return res
-      .status(501)
-      .jaon({
-        message: "Internal server error ocuired!",
-        data: {},
-        success: false,
-      });
+    return res.status(501).jaon({
+      message: "Internal server error ocuired!",
+      data: {},
+      success: false,
+    });
 
   return res
     .status(201)
@@ -89,4 +88,27 @@ export const logout = async (req, res) => {
   return res
     .status(200)
     .json({ message: "Logut successfull", data: {}, success: true });
+};
+
+export const getMe = async (req, res) => {
+  const userId = req.user._id;
+  if (!userId || !mongoose.Types.ObjectId(userId))
+    return res
+      .status(400)
+      .json({ message: "Invalid user id", data: {}, success: false });
+
+  const user = await User.findOne(userId).select("-password");
+
+  if (!user)
+    return res
+      .status(404)
+      .json({
+        message: "User not found or Invalid user id",
+        data: {},
+        success: false,
+      });
+
+  return res
+    .status(200)
+    .json({ message: "User data found", data: user, success: true });
 };

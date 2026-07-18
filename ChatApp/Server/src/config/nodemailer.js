@@ -3,14 +3,14 @@ import { user, pass } from "../../constant.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
   auth: {
     user: user,
     pass: pass,
   },
 });
+
+await transporter.verify();
+console.log("SMTP connected");
 
 export const sendMail = async (email, otp) => {
   try {

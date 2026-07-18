@@ -10,7 +10,7 @@ import chatRouter from "./src/routes/chat.routes.js";
 
 const app = express();
 
-const port = process.env.APP_PORT;
+const port = process.env.PORT || process.env.APP_PORT;
 const server = createServer(app);
 
 const io = new Server(server, {

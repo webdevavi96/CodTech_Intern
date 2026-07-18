@@ -27,6 +27,7 @@ export const sendMail = async (email, otp) => {
     await transporter.sendMail(mailOptions);
     return true;
   } catch (error) {
+    console.error(error);
     return false;
   }
 };

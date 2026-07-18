@@ -109,6 +109,6 @@ io.on("connection", (socket) => {
   });
 });
 
-await verifySMTP();
+verifySMTP();
 
 export { app, server, port };

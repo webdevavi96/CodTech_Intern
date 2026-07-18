@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { Messages } from "./src/models/Messages.models.js";
 import userRouter from "./src/routes/auth.routes.js";
 import chatRouter from "./src/routes/chat.routes.js";
+import { verifySMTP } from "./src/config/nodemailer.js";
 
 const app = express();
 
@@ -105,5 +106,8 @@ io.on("connection", (socket) => {
     });
   });
 });
+
+
+await verifySMTP();
 
 export { app, server, port };

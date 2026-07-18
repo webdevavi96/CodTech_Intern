@@ -9,9 +9,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-await transporter.verify();
-console.log("SMTP connected");
-
 export const sendMail = async (email, otp) => {
   try {
     const mailOptions = {
@@ -29,5 +26,14 @@ export const sendMail = async (email, otp) => {
   } catch (error) {
     console.error(error);
     return false;
+  }
+};
+
+export const verifySMTP = async () => {
+  try {
+    await transporter.verify();
+    console.log("SMTP connected");
+  } catch (err) {
+    console.error("SMTP verify failed:", err);
   }
 };

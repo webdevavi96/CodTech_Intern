@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import fs from "fs";
 import cors from "cors";
 import express from "express";
@@ -107,5 +109,6 @@ io.on("connection", (socket) => {
   });
 });
 
+await verifySMTP();
 
 export { app, server, port };

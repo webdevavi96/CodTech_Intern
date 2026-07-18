@@ -1,24 +1,28 @@
 import nodemailer from "nodemailer";
-import { user, pass } from "../../constant.js";
-
 
 const transporter = nodemailer.createTransport({
-  host:"smtp-relay.brevo.com",
+  host: "smtp-relay.brevo.com",
   port: 587,
-  family: 4,
-  connectionTimeout: 30000,
-  greetingTimeout: 30000,
-  socketTimeout: 30000,
+  secure: false,
   auth: {
-    user: user,
-    pass: pass,
+    user: process.env.BREVO_LOGIN,
+    pass: process.env.BREVO_PASSWORD,
   },
 });
+
+export const verifySMTP = async () => {
+  try {
+    await transporter.verify();
+    console.log("Brevo SMTP Connected");
+  } catch (err) {
+    console.error("SMTP verify failed:", err);
+  }
+};
 
 export const sendMail = async (email, otp) => {
   try {
     const mailOptions = {
-      from: user,
+      from: process.env.BREVO_SENDER,
       to: email,
       subject: "OTP for confirmation",
       text: `Your One Time Password for registraion is:
@@ -32,14 +36,5 @@ export const sendMail = async (email, otp) => {
   } catch (error) {
     console.error(error);
     return false;
-  }
-};
-
-export const verifySMTP = async () => {
-  try {
-    await transporter.verify();
-    console.log("SMTP connected");
-  } catch (err) {
-    console.error("SMTP verify failed:", err);
   }
 };

@@ -2,7 +2,6 @@ import { createClient } from "redis";
 
 const url = process.env.REDIS;
 
-console.log(url);
 
 const client = createClient({ url: url });
 

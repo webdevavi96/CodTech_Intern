@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 import { user, pass } from "../../constant.js";
 
-console.log("user: ", user, "password: ", pass, "length: ", pass.length)
 
 const transporter = nodemailer.createTransport({
   service: "gmail",

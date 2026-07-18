@@ -1,6 +1,8 @@
 import { createClient } from "redis";
 
-const client = createClient();
+const client = createClient({
+  url: process.env.REDIS
+});
 
 client.on("error", (error) => console.error(error));
 

@@ -4,6 +4,10 @@ import { user, pass } from "../../constant.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  family: 4,
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 30000,
   auth: {
     user: user,
     pass: pass,

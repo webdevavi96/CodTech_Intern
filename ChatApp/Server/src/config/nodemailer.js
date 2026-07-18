@@ -3,6 +3,7 @@ import { user, pass } from "../../constant.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  port: 587,
   auth: {
     user: user,
     pass: pass,

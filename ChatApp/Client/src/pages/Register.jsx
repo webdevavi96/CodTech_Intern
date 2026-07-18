@@ -98,7 +98,7 @@ function Register() {
               <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
               <input
                 {...register("password")}
-                onChange={(e) => setPassword(e.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 type={show ? "text" : "password"}
                 className="w-full rounded-md border border-gray-300 px-4 py-2 pr-10 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
               />
@@ -117,7 +117,7 @@ function Register() {
               </label>
               <input
                 {...register("confirmPassword")}
-                onChange={(e) => setConfPassword(e.value)}
+                onChange={(e) => setConfPassword(e.target.value)}
                 type={show ? "text" : "password"}
                 className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#009DFF] focus:outline-none"
               />

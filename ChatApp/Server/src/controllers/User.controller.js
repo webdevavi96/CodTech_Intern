@@ -88,12 +88,12 @@ export const register = asyncHandler(async (req, res) => {
   const { username, name, email, password, gender } = req.body;
   const defaultAvatar = {
     male: "https://res.cloudinary.com/meplay/image/upload/v1776494190/male_avatar_qu98y7.jpg",
-    feamle: "https://res.cloudinary.com/meplay/image/upload/v1776494190/female_avatar_dzphdm.jpg",
+    female: "https://res.cloudinary.com/meplay/image/upload/v1776494190/female_avatar_dzphdm.jpg",
   };
   const normalizedGender = gender?.toLowerCase();
   const avatar = defaultAvatar[normalizedGender] || defaultAvatar["male"];
 
-  if (!username || !name || !email || !password || gender)
+  if (!username || !name || !email || !password || !gender)
     return res.status(400).json({
       message: "All; fields are reqired!",
       data: {},

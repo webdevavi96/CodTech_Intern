@@ -3,7 +3,8 @@ import { user, pass } from "../../constant.js";
 
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host:"smtp-relay.brevo.com",
+  port: 587,
   family: 4,
   connectionTimeout: 30000,
   greetingTimeout: 30000,

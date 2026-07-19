@@ -12,33 +12,45 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     const getMe = async () => {
+      const controller = new AbortController();
+
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, 5000);
+
       try {
         const res = await fetch(`${url}/me`, {
           method: "GET",
           credentials: "include",
+          signal: controller.signal,
         });
+
+        clearTimeout(timeoutId);
+
         if (!res.ok) {
           setUser(null);
           setIsAuthenticated(false);
-          setLoading(false);
           return;
         }
 
         const data = await res.json();
-        setUser(data?.data);
+        setUser(data.data);
         setIsAuthenticated(true);
       } catch (err) {
-        console.error(err);
-        setUser(null);
-        setIsAuthenticated(false);
+        if (err.name === "AbortError") {
+          console.log("Server timeout");
+        } else {
+          console.error(err);
+          setUser(null);
+          setIsAuthenticated(false);
+        }
       } finally {
+        clearTimeout(timeoutId);
         setLoading(false);
       }
     };
 
-    if (didRun.current) return;
     getMe();
-    didRun.current = true;
   }, []);
 
   const userContext = (username) => setUsername(username);

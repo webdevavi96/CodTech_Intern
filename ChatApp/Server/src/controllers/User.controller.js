@@ -100,6 +100,13 @@ export const register = asyncHandler(async (req, res) => {
       success: false,
     });
 
+  const existingUser = await User.find({ username, email });
+
+  if (existingUser)
+    return res
+      .status(200)
+      .json({ message: "This username or email already exists! Try to login in your account." });
+
   const { isSent, otp } = await sendOtp(email);
 
   if (!isSent)
